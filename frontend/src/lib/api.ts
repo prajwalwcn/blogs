@@ -30,6 +30,9 @@ export async function apiRequest<T = any>(
 
   // Build URL with query params
   let url = endpoint;
+  if (url.startsWith("/") && !url.startsWith("/blog")) {
+    url = `/blog${url}`;
+  }
   if (params) {
     const searchParams = new URLSearchParams();
     Object.entries(params).forEach(([key, val]) => {

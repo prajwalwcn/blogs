@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  basePath: "/blog",
   images: {
     remotePatterns: [
       // Allow any external image source (localhost dev, Unsplash, CDN, production storage)
