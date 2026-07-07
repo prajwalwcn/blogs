@@ -244,7 +244,7 @@ export default function SiteNavbar() {
             {/* Get a Quote CTA Button (Desktop) */}
             <Link
               href="#contact-section"
-              className="hidden lg:inline-flex items-center justify-center px-5 py-2.5 bg-[#d35400] hover:bg-[#ba4a00] text-white font-extrabold uppercase text-[11px] tracking-widest rounded-full transition-all duration-200 shrink-0 ml-3 shadow-sm hover:shadow"
+              className="hidden lg:inline-flex items-center justify-center px-5 py-2.5 bg-[#b83d00] hover:bg-[#9c3300] text-white font-extrabold uppercase text-[11px] tracking-widest rounded-full transition-all duration-200 shrink-0 ml-3 shadow-sm hover:shadow"
             >
               Get a Quote
             </Link>
@@ -349,7 +349,7 @@ export default function SiteNavbar() {
           <Link
             href="#contact-section"
             onClick={() => setMobileOpen(false)}
-            className="w-full flex items-center justify-center py-2.5 bg-[#d35400] hover:bg-[#ba4a00] text-white font-extrabold uppercase text-[11px] tracking-widest rounded-full transition-all duration-200"
+            className="w-full flex items-center justify-center py-2.5 bg-[#b83d00] hover:bg-[#9c3300] text-white font-extrabold uppercase text-[11px] tracking-widest rounded-full transition-all duration-200"
           >
             Get a Quote
           </Link>

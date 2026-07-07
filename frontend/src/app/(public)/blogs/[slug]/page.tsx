@@ -470,6 +470,8 @@ export default async function BlogDetailPage({ params }: PageProps) {
                   alt={blog.image.alt || blog.name}
                   fill
                   priority
+                  loading="eager"
+                  {...({ fetchPriority: "high" } as any)}
                   className="object-cover"
                 />
               </div>

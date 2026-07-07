@@ -103,7 +103,7 @@ export default function ContactSection() {
           <div className="lg:col-span-5 flex flex-col justify-between relative overflow-hidden">
             <div className="relative z-10 space-y-6">
               <div>
-                <span className="block text-[11px] font-bold text-blue-100 uppercase tracking-widest mb-1.5">
+                <span className="block text-[11px] font-bold text-zinc-50 uppercase tracking-widest mb-1.5">
                   CONTACT US
                 </span>
                 <h3 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white leading-tight">
@@ -123,7 +123,7 @@ export default function ContactSection() {
                     <Mail className="h-5 w-5" />
                   </div>
                   <div className="min-w-0">
-                    <span className="block text-[10px] font-bold text-blue-100 uppercase tracking-wider">Email Address :</span>
+                    <span className="block text-[10px] font-bold text-zinc-50 uppercase tracking-wider">Email Address :</span>
                     <a href={`mailto:${dynamicEmail}`} className="text-xs sm:text-sm font-semibold text-white hover:underline transition-all block truncate">
                       {dynamicEmail}
                     </a>
@@ -136,7 +136,7 @@ export default function ContactSection() {
                     <Phone className="h-5 w-5" />
                   </div>
                   <div className="min-w-0">
-                    <span className="block text-[10px] font-bold text-blue-100 uppercase tracking-wider">Phone Number :</span>
+                    <span className="block text-[10px] font-bold text-zinc-50 uppercase tracking-wider">Phone Number :</span>
                     <a href={`tel:${dynamicPhone}`} className="text-xs sm:text-sm font-semibold text-white hover:underline transition-all block truncate">
                       {dynamicPhone}
                     </a>
@@ -149,7 +149,7 @@ export default function ContactSection() {
                     <MapPin className="h-5 w-5" />
                   </div>
                   <div className="min-w-0">
-                    <span className="block text-[10px] font-bold text-blue-100 uppercase tracking-wider">Location Address :</span>
+                    <span className="block text-[10px] font-bold text-zinc-50 uppercase tracking-wider">Location Address :</span>
                     <span className="text-xs sm:text-sm font-semibold text-white block truncate">
                       {dynamicAddress}
                     </span>
@@ -284,8 +284,8 @@ export default function ContactSection() {
         </div>
 
         {/* ── Nested Google Map (inside the contact section container) ── */}
-        {settings?.google_map_iframe ? (
-          <div className="w-full rounded-3xl overflow-hidden border border-white/10 shadow-lg relative h-[380px] [&_iframe]:w-full [&_iframe]:h-full bg-white/5">
+        <div className="w-full rounded-3xl overflow-hidden border border-white/10 shadow-lg relative h-[380px] bg-white/5 [&_iframe]:w-full [&_iframe]:h-full">
+          {settings?.google_map_iframe ? (
             <div 
               dangerouslySetInnerHTML={{ 
                 __html: settings.google_map_iframe.includes("title=") 
@@ -294,9 +294,7 @@ export default function ContactSection() {
               }} 
               className="w-full h-full" 
             />
-          </div>
-        ) : !loadingSettings && (
-          <div className="w-full rounded-3xl overflow-hidden border border-white/10 shadow-lg relative h-[380px] bg-white/5">
+          ) : (
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3532.2285994246944!2d85.32185257620353!3d27.702553976189917!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb19a63b2f9011%3A0x446e1074a36f56bc!2sWeb%20Creation%20Nepal!5e0!3m2!1sen!2snp!4v1719811200000!5m2!1sen!2snp"
               title="Google Maps Location of Web Creation Nepal"
@@ -306,8 +304,8 @@ export default function ContactSection() {
               allowFullScreen={true}
               loading="lazy"
             />
-          </div>
-        )}
+          )}
+        </div>
 
       </div>
 

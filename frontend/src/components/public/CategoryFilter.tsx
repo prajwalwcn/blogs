@@ -95,8 +95,8 @@ export default function CategoryFilter({ categories, currentCategory }: Category
             href="/"
             className={`px-4 py-2 text-[12px] font-semibold rounded-full transition-all duration-200 shrink-0 ${
               !currentCategory
-                ? "bg-[#76a21e] text-white shadow-sm"
-                : "bg-white text-zinc-650 border border-zinc-200 hover:bg-zinc-50 hover:text-zinc-800"
+                ? "bg-[#507212] text-white shadow-sm"
+                : "bg-white text-zinc-700 border border-zinc-200 hover:bg-zinc-50 hover:text-zinc-900"
             }`}
           >
             All Categories
@@ -111,8 +111,8 @@ export default function CategoryFilter({ categories, currentCategory }: Category
                 href={`/?category=${cat.slug}`}
                 className={`px-4 py-2 text-[12px] font-semibold rounded-full transition-all duration-200 shrink-0 ${
                   isActive
-                    ? "bg-[#76a21e] text-white shadow-sm"
-                    : "bg-white text-zinc-650 border border-zinc-200 hover:bg-zinc-50 hover:text-zinc-800"
+                    ? "bg-[#507212] text-white shadow-sm"
+                    : "bg-white text-zinc-700 border border-zinc-200 hover:bg-zinc-50 hover:text-zinc-900"
                 }`}
               >
                 {cat.name}
