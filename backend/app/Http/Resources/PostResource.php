@@ -23,6 +23,10 @@ class PostResource extends JsonResource
         return [
             'id' => $this->resource->id,
             'blog_id' => $this->resource->blog_id,
+            'blog' => $this->resource->blog ? [
+                'name' => $this->resource->blog->name,
+                'slug' => $this->resource->blog->slug,
+            ] : null,
             'author_id' => $this->resource->author_id,
             'title' => $this->resource->title,
             'slug' => $this->resource->slug,

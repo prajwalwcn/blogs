@@ -55,6 +55,7 @@ export default function AdminBlogCreatePage() {
     const payload = {
       name: data.name,
       slug: data.slug || undefined,
+      excerpt: data.excerpt || undefined,
       description: data.description || undefined,
       image_url: data.image_url || undefined,
       image_alt: data.image_alt || undefined,

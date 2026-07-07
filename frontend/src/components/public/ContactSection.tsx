@@ -91,7 +91,7 @@ export default function ContactSection() {
   const dynamicAddress = settings?.address || "Kathmandu, Nepal";
 
   return (
-    <div className="w-full bg-[#2665A3] text-white border-t border-blue-700/30 pt-16">
+    <div id="contact-section" className="w-full bg-[#2665A3] text-white border-t border-blue-700/30 pt-16">
       
       {/* Width constrained to align exactly with header & footer padding */}
       <div className="w-full px-4 sm:px-8 md:px-12 lg:px-16 space-y-12">

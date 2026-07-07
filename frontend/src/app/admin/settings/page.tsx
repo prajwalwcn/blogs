@@ -182,9 +182,19 @@ export default function AdminSettingsPage() {
     }
     setSavingProfile(true);
     try {
+      await apiRequest("/api/profile", {
+        method: "PUT",
+        body: JSON.stringify({
+          name: profileName,
+          email: profileEmail,
+        }),
+      });
       toast.success("Profile updated successfully!");
-    } catch { toast.error("Failed to save profile."); }
-    finally { setSavingProfile(false); }
+    } catch (err: any) {
+      toast.error(err.message || "Failed to save profile.");
+    } finally {
+      setSavingProfile(false);
+    }
   };
 
   const handleSavePassword = async (e: React.FormEvent) => {
@@ -199,10 +209,22 @@ export default function AdminSettingsPage() {
     }
     setSavingPassword(true);
     try {
+      await apiRequest("/api/password", {
+        method: "PUT",
+        body: JSON.stringify({
+          current_password: currentPassword,
+          new_password: newPassword,
+        }),
+      });
       toast.success("Password changed successfully!");
-      setCurrentPassword(""); setNewPassword(""); setConfirmPassword("");
-    } catch { toast.error("Failed to change password."); }
-    finally { setSavingPassword(false); }
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+    } catch (err: any) {
+      toast.error(err.message || "Failed to change password.");
+    } finally {
+      setSavingPassword(false);
+    }
   };
 
   const handleSaveWebsite = async (e: React.FormEvent) => {

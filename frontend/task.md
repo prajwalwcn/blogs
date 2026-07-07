@@ -1,0 +1,36 @@
+- `[x]` Database migration to add `excerpt` to `blogs` table
+- `[x]` Update Laravel `Blog` model `$fillable` and description `$casts`
+- `[x]` Update Laravel `BlogController` and Form requests validation
+- `[x]` Refactor `BlogSeeder.php` database seed structures
+- `[x]` Implement sections Repeater and Excerpt inputs in admin `BlogForm.tsx`
+- `[x]` Safe check on admin blog filter logic to avoid type crash on array descriptions
+- `[x]` Clean up admin sidebar links in `AdminShell.tsx` to remove Posts
+- `[x]` Refactor public `blogs/[slug]/page.tsx` for layout sections rendering
+- `[x]` Implement dynamic Table of Contents (TOC) and anchor links
+- `[x]` Inject complete SEO schemas (WebSite, Organization, ItemList, BlogPosting, FAQPage, BreadcrumbList)
+- `[x]` Redirect old individual post details subroutes back to the main article
+- `[x]` Reduce Logo size and adjust header container spacing in `SiteNavbar.tsx`
+- `[x]` Add prominent "Get a Quote" CTA button (desktop top bar and mobile drawer)
+- `[x]` Differentiate hyperlink styles and enforce table responsiveness
+- `[x]` Center-aligned popups for sharing in `ShareButtons.tsx`
+- `[x]` Compile and run production build verification tests
+- `[x]` Configure secure Content-Security-Policy and HTTP security headers in `next.config.ts`
+- `[x]` Create public loading shell page layout (`loading.tsx`)
+- `[x]` Create public error boundaries reload layout (`error.tsx`)
+- `[x]` Implement `generateStaticParams()` on the blog details route (`blogs/[slug]/page.tsx`)
+- `[x]` Implement dynamic RSS XML feed builder endpoint (`feed.xml/route.ts`)
+- `[x]` Create public crawler directory file (`llms.txt`)
+- `[x]` Map SearchAction sitelinks schema on the homepage JSON-LD script
+- `[x]` Hook up dynamic profile name/email and password changes endpoints on both Laravel backend controllers and frontend layouts
+- `[x]` Create database migration table, Eloquent model, REST API endpoint controllers, database seed script, and SiteNavbar client-side mapping to support dynamic navigation menus
+- `[x]` Implement Admin Navigation Menus Management dashboard interface (/admin/menus) in frontend and include custom link trigger in AdminShell sidebar menu lists
+- `[x]` Enrich generateMetadata with published times, author handles, and OpenGraph/Twitter card images to enable high-fidelity social sharing previews
+- `[x]` Implement dynamic Previous and Next sibling blog navigation cards (arrows and title links) at the bottom of the article details views
+- `[x]` Run production compilation tests and verify output builds
+- `[x]` Map optional Icon/Image URL input fields in Admin Menu manager forms to match backend API validations
+- `[x]` Expose horizontal navigation menu lists on desktop viewports dynamically in SiteNavbar header layouts
+- `[x]` Render dynamic menu icons next to link titles inside both desktop navigations and mobile drawer menu items
+- `[x]` Fix tablet viewport display bug on mobile drawer hamburger triggers by mapping lg:hidden instead of md:hidden
+- `[x]` Refactor backend AuthorController and TagController responses to load and return standard parent blogs instead of isolated posts
+- `[x]` Remove layout duplications and render unified, server-side-rendered author detail routes (/authors/[slug]) listing matching blog channel card grids
+- `[x]` Wrap author card tags inside active dynamic Link selectors linking to unified topic tag pages (/tags/[slug]) listing matching channel cards

@@ -60,13 +60,57 @@ class AuthorController extends Controller
             ], 404);
         }
 
-        // Get posts by this author
-        $perPage = $request->query('limit') ? (int) $request->query('limit') : 10;
-        $posts = $this->postService->getPublishedPosts($perPage, null, $author->id);
+        // Retrieve published blogs (channels) written by this author
+        $blogs = \App\Domains\Blog\Models\Blog::where('author_id', $author->id)
+            ->with(['author', 'categories', 'tags'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $formattedBlogs = $blogs->map(function ($blog) {
+            return [
+                'id' => $blog->id,
+                'name' => $blog->name,
+                'slug' => $blog->slug,
+                'excerpt' => $blog->excerpt,
+                'description' => $blog->description,
+                'read_time' => $blog->read_time,
+                'author_id' => $blog->author_id,
+                'author' => $blog->author ? [
+                    'id' => $blog->author->id,
+                    'name' => $blog->author->name,
+                    'slug' => $blog->author->slug,
+                    'avatar_url' => $blog->author->image_url,
+                ] : null,
+                'meta_title' => $blog->meta_title,
+                'meta_description' => $blog->meta_description,
+                'meta_keywords' => $blog->meta_keywords,
+                'image_url' => $blog->image_url,
+                'image' => [
+                    'url' => $blog->image_url,
+                    'alt' => $blog->image_alt,
+                    'caption' => $blog->image_caption,
+                ],
+                'categories' => $blog->categories->map(function ($cat) {
+                    return [
+                        'id' => $cat->id,
+                        'name' => $cat->name,
+                        'slug' => $cat->slug,
+                    ];
+                })->values()->toArray(),
+                'tags' => $blog->tags->map(function ($tag) {
+                    return [
+                        'id' => $tag->id,
+                        'name' => $tag->name,
+                        'slug' => $tag->slug,
+                    ];
+                })->values()->toArray(),
+                'created_at' => $blog->created_at?->toIso8601String(),
+            ];
+        });
 
         return response()->json([
             'author' => new AuthorResource($author),
-            'posts' => PostResource::collection($posts),
+            'blogs' => $formattedBlogs,
         ]);
     }
 

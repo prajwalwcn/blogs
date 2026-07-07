@@ -30,6 +30,7 @@ Route::get('/sitemap-data', [SeoController::class, 'sitemapData']);
 Route::get('/redirects/check', [RedirectController::class, 'check']);
 Route::get('/redirects', [RedirectController::class, 'index']);
 Route::get('/settings', [SettingController::class, 'index']);
+Route::get('/menus', [\App\Http\Controllers\Api\MenuController::class, 'index']);
 
 // Posts Public API
 Route::get('/posts', [PostController::class, 'index']);
@@ -64,11 +65,18 @@ Route::middleware('auth:sanctum')->group(function () {
     // Admin Info & Logout
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/me', [AuthController::class, 'me']);
+    Route::put('/profile', [AuthController::class, 'updateProfile']);
+    Route::put('/password', [AuthController::class, 'updatePassword']);
     Route::post('/upload', [\App\Http\Controllers\Api\UploadController::class, 'upload']);
 
     // Redirect Management API
     Route::post('/redirects', [RedirectController::class, 'store']);
     Route::put('/settings', [SettingController::class, 'update']);
+
+    // Navigation Menu Management API
+    Route::post('/menus', [\App\Http\Controllers\Api\MenuController::class, 'store']);
+    Route::put('/menus/{id}', [\App\Http\Controllers\Api\MenuController::class, 'update']);
+    Route::delete('/menus/{id}', [\App\Http\Controllers\Api\MenuController::class, 'destroy']);
 
     // Posts Admin CRUD
     Route::post('/posts', [PostController::class, 'store']);

@@ -4,6 +4,7 @@ import FloatingContact from "@/components/public/FloatingContact";
 import ContactSection from "@/components/public/ContactSection";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"),
   title: {
     template: "%s | Web Creation Nepal Blog",
     default: "Web Creation Nepal – Digital Insights & Tech Articles",
@@ -18,6 +19,25 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     siteName: "Web Creation Nepal Blog",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  verification: {
+    google: "google-site-verification-placeholder",
+    yandex: "yandex-verification-placeholder",
+    other: {
+      bing: "bing-verification-placeholder",
+      baidu: "baidu-site-verification-placeholder",
+    },
   },
 };
 

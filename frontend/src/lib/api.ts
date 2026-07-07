@@ -30,8 +30,9 @@ export async function apiRequest<T = any>(
 
   // Build URL with query params
   let url = endpoint;
-  if (url.startsWith("/") && !url.startsWith("/blogs")) {
-    url = `/blogs${url}`;
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "/blog";
+  if (url.startsWith("/") && basePath && basePath !== "/" && !url.startsWith(basePath)) {
+    url = `${basePath}${url}`;
   }
   if (params) {
     const searchParams = new URLSearchParams();

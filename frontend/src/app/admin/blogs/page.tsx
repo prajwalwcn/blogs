@@ -29,7 +29,8 @@ interface Blog {
   id: number;
   name: string;
   slug: string;
-  description: string;
+  excerpt?: string | null;
+  description: any;
   meta_title: string | null;
   meta_description: string | null;
   meta_keywords: string | null;
@@ -110,7 +111,11 @@ export default function AdminBlogsPage() {
     (blog) =>
       blog.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       blog.slug.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (blog.description && blog.description.toLowerCase().includes(searchQuery.toLowerCase()))
+      (blog.description && (
+        typeof blog.description === "string"
+          ? blog.description.toLowerCase().includes(searchQuery.toLowerCase())
+          : JSON.stringify(blog.description).toLowerCase().includes(searchQuery.toLowerCase())
+      ))
   );
 
   if (loading) {
@@ -244,7 +249,7 @@ export default function AdminBlogsPage() {
 
                     {/* Description Cell */}
                     <TableCell className="max-w-md truncate text-xs text-zinc-550 dark:text-zinc-400 font-medium">
-                      {blog.description || "—"}
+                      {blog.excerpt || (typeof blog.description === "string" ? blog.description : "—")}
                     </TableCell>
 
                     {/* Actions Cell */}

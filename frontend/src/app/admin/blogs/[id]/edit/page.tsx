@@ -13,7 +13,8 @@ interface Blog {
   id: number;
   name: string;
   slug: string;
-  description: string;
+  excerpt?: string | null;
+  description: any;
   meta_title: string | null;
   meta_description: string | null;
   meta_keywords: string | null;
@@ -91,6 +92,7 @@ export default function AdminBlogEditPage({ params }: PageProps) {
     const payload = {
       name: data.name,
       slug: data.slug || undefined,
+      excerpt: data.excerpt || undefined,
       description: data.description || undefined,
       image_url: data.image_url || undefined,
       image_alt: data.image_alt || undefined,
@@ -172,6 +174,7 @@ export default function AdminBlogEditPage({ params }: PageProps) {
             initialData={{
               name: blogData.name,
               slug: blogData.slug,
+              excerpt: blogData.excerpt || "",
               description: blogData.description,
               image_url: blogData.image_url || "",
               image_alt: blogData.image_alt || "",

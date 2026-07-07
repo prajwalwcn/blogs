@@ -15,7 +15,8 @@ interface CommentSectionProps {
   blogSlug: string;
 }
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+const rawApiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+const API_URL = rawApiUrl.replace(/\/api\/?$/, "").replace(/\/$/, "");
 
 export default function CommentSection({ blogId, blogSlug }: CommentSectionProps) {
   const [comments, setComments] = useState<Comment[]>([]);

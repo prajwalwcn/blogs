@@ -13,7 +13,8 @@ interface Blog {
   id: number;
   name: string;
   slug: string;
-  description: string;
+  excerpt?: string | null;
+  description: any;
   meta_title: string | null;
   meta_description: string | null;
   meta_keywords: string | null;
@@ -134,6 +135,7 @@ export default function AdminBlogViewPage({ params }: PageProps) {
             initialData={{
               name: blogData.name,
               slug: blogData.slug,
+              excerpt: blogData.excerpt || "",
               description: blogData.description,
               image_url: blogData.image_url || "",
               image_alt: blogData.image_alt || "",

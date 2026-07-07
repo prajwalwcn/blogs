@@ -3,7 +3,8 @@ import Link from "next/link";
 import { ArrowRight, Globe, Search } from "lucide-react";
 import BlogCard from "@/components/public/BlogCard";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+const rawApiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+const API_URL = rawApiUrl.replace(/\/api\/?$/, "").replace(/\/$/, "");
 
 interface Blog {
   id: number;
@@ -81,7 +82,7 @@ export default async function BlogsPage() {
       {/* ── Page Header ─────────────────────────────────────────── */}
       <section className="bg-gradient-to-br from-blue-700 to-blue-900 text-white py-14 sm:py-20 relative overflow-hidden" aria-labelledby="blogs-page-heading">
         <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, white 1px, transparent 0)", backgroundSize: "28px 28px" }} />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div className="relative max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 text-white/90 text-[10px] font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-5">
             <Globe className="h-3 w-3" />
             Knowledge Hubs
@@ -97,7 +98,7 @@ export default async function BlogsPage() {
 
       {/* ── Blogs Grid ──────────────────────────────────────────── */}
       <section className="bg-zinc-50 py-14 sm:py-18" aria-label="Blog channels listing">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
 
           {/* Count bar */}
           <div className="flex items-center justify-between mb-8">

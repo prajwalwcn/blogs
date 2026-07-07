@@ -169,11 +169,7 @@ return [
      *     ],
      * ],
      */
-    'security_strategy' => [
-        \Dedoc\Scramble\SecurityDocumentation\MiddlewareAuthSecurityStrategy::class,
-        [
-            'middleware' => ['auth:sanctum'],
-            'scheme' => \Dedoc\Scramble\Support\Generator\SecurityScheme::http('bearer'),
-        ],
-    ],
+    // Set to null to allow `php artisan config:cache` to work on production.
+    // Scramble API docs are not needed in production.
+    'security_strategy' => null,
 ];

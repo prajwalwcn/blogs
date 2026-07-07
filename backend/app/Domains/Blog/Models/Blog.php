@@ -23,6 +23,7 @@ class Blog extends Model
         'read_time',
         'name',
         'slug',
+        'excerpt',
         'description',
         'meta_title',
         'meta_description',
@@ -42,6 +43,7 @@ class Blog extends Model
     protected $casts = [
         'allow_comments' => 'boolean',
         'faq' => 'array',
+        'description' => 'array',
     ];
 
     /**

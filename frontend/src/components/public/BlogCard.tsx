@@ -7,13 +7,15 @@ export interface BlogCardProps {
   id: number;
   name: string;
   slug: string;
-  description?: string | null;
+  excerpt?: string | null;
+  description?: Array<{ title: string; content: string }> | string | null;
   meta_keywords?: string | null;
   created_at?: string | null;
   read_time?: number | null;
   author?: {
     id: number;
     name: string;
+    slug?: string | null;
     avatar_url?: string | null;
   } | null;
   image?: {
@@ -27,6 +29,7 @@ export interface BlogCardProps {
 export default function BlogCard({
   name,
   slug,
+  excerpt,
   description,
   meta_keywords,
   created_at,
@@ -78,10 +81,19 @@ export default function BlogCard({
       ];
       return stockImages[hash % stockImages.length];
     }
+    if (!url.startsWith("http://") && !url.startsWith("https://")) {
+      const rawApiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+      const API_URL = rawApiUrl.replace(/\/api\/?$/, "").replace(/\/$/, "");
+      const cleanUrl = url.startsWith("/") ? url : `/${url}`;
+      return `${API_URL}${cleanUrl}`;
+    }
     return url;
   };
 
   const finalImageUrl = getValidImageUrl(image?.url);
+
+  // Excerpt or description fallback
+  const displaySummary = excerpt || (typeof description === "string" ? description : "");
 
   return (
     <article
@@ -135,10 +147,10 @@ export default function BlogCard({
         <Link href={href} className="block mb-3">
           <h2
             className={cn(
-              "font-bold text-zinc-800 leading-snug transition-colors group-hover:text-blue-600",
+              "font-semibold text-[#252525] leading-[30px] transition-colors group-hover:text-blue-600",
               size === "large"
-                ? "text-[22px] line-clamp-2"
-                : "text-[18px] line-clamp-2"
+                ? "text-[24px] line-clamp-2"
+                : "text-[22px] line-clamp-2"
             )}
           >
             {name}
@@ -146,9 +158,9 @@ export default function BlogCard({
         </Link>
 
         {/* Excerpt/Description */}
-        {description && (
-          <p className="text-[14px] text-zinc-500/90 leading-relaxed line-clamp-3 mb-6">
-            {description}
+        {displaySummary && (
+          <p className="text-[16px] font-normal text-[#3D3D3D] leading-[24px] line-clamp-3 mb-6">
+            {displaySummary}
           </p>
         )}
 
@@ -160,16 +172,25 @@ export default function BlogCard({
             <div className="h-6 w-6 rounded-full bg-[#e1ecd9] flex items-center justify-center shrink-0">
               <PenTool className="h-3 w-3 text-[#5d8246]" />
             </div>
-            <span className="text-[13px]  text-zinc-650 truncate">
-              {author?.name || "Web Creation Nepal"}
-            </span>
+            {author?.slug ? (
+              <Link
+                href={`/authors/${author.slug}`}
+                className="text-[14px] font-medium text-[#5D5D5D] hover:text-blue-600 transition-colors leading-[24px] truncate cursor-pointer"
+              >
+                {author.name}
+              </Link>
+            ) : (
+              <span className="text-[14px] font-medium text-[#5D5D5D] leading-[24px] truncate">
+                {author?.name || "Web Creation Nepal"}
+              </span>
+            )}
           </div>
 
           {/* Read Time (Middle/Right) */}
           {read_time && (
-            <div className="flex items-center gap-1.5 shrink-0 text-zinc-500">
+            <div className="flex items-center gap-1.5 shrink-0">
               <Clock className="h-3.5 w-3.5 text-zinc-400" />
-              <span className="text-[13px] font-medium whitespace-nowrap">
+              <span className="text-[14px] font-medium text-[#5D5D5D] leading-[24px] whitespace-nowrap">
                 {read_time} min read
               </span>
             </div>

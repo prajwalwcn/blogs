@@ -51,14 +51,14 @@
   --brand-green: oklch(0.44 0.13 145);
 }
 
-@theme inline {
+@theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
   --color-border: var(--border);
   --color-ring: var(--ring);
-  --font-sans: var(--font-poppins), system-ui, sans-serif;
+  --font-sans: var(--font-host-grotesk), system-ui, sans-serif;
   --font-roboto-condensed: var(--font-roboto-condensed), sans-serif;
   
   --color-sidebar: var(--sidebar);
@@ -135,4 +135,8 @@
 
 .font-roboto-condensed-custom {
   font-family: var(--font-roboto-condensed), sans-serif !important;
+}
+
+body, button, input, select, textarea, h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-host-grotesk), system-ui, -apple-system, sans-serif !important;
 }

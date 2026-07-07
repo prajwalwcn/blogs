@@ -26,5 +26,12 @@ class DatabaseSeeder extends Seeder
         );
 
         $this->call(BlogSeeder::class);
+
+        // Seed default navigation menus
+        \App\Domains\Setting\Models\Menu::create(['label' => 'Home', 'url' => '/', 'order' => 1]);
+        \App\Domains\Setting\Models\Menu::create(['label' => 'Blogs', 'url' => '/blogs', 'order' => 2]);
+        \App\Domains\Setting\Models\Menu::create(['label' => 'About', 'url' => '/about', 'order' => 3]);
+        \App\Domains\Setting\Models\Menu::create(['label' => 'Services', 'url' => '/services', 'order' => 4]);
+        \App\Domains\Setting\Models\Menu::create(['label' => 'Contact', 'url' => '/contact', 'order' => 5]);
     }
 }

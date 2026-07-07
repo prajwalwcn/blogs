@@ -4,7 +4,8 @@ import { FileText } from "lucide-react";
 import BlogCard from "@/components/public/BlogCard";
 import CategoryFilter from "@/components/public/CategoryFilter";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+const rawApiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+const API_URL = rawApiUrl.replace(/\/api\/?$/, "").replace(/\/$/, "");
 const ITEMS_PER_PAGE = 8; // 2 large cards + 6 small cards (2 rows of 3)
 
 // ── Types ──────────────────────────────────────────────────────────────────
@@ -19,7 +20,8 @@ interface Blog {
   id: number;
   name: string;
   slug: string;
-  description?: string | null;
+  excerpt?: string | null;
+  description?: any;
   meta_keywords?: string | null;
   created_at?: string | null;
   read_time?: number | null;
@@ -101,26 +103,87 @@ export async function generateMetadata(): Promise<Metadata> {
 
 // ── JSON-LD ────────────────────────────────────────────────────────────────
 function JsonLd({ blogs, settings }: { blogs: Blog[]; settings: any }) {
-  const schema = {
-    "@context": "https://schema.org",
-    description: settings?.site_tagline || "Insights, technology advice, and culture from Web Creation Nepal.",
-    url: "https://webcreation.com.np",
-    publisher: {
+  const baseUrl = "https://demo.webcreationcanada.com/blog";
+  const logoUrl = settings?.logo_url || `${baseUrl}/logo.png`;
+
+  const sameAs: string[] = [];
+  if (settings?.social_links) {
+    const sl = settings.social_links;
+    if (sl.facebook) sameAs.push(sl.facebook);
+    if (sl.x) sameAs.push(sl.x);
+    if (sl.instagram) sameAs.push(sl.instagram);
+    if (sl.threads) sameAs.push(sl.threads);
+  }
+
+  const schemas = [
+    {
       "@type": "Organization",
-      name: settings?.site_name || "Web Creation Nepal Pvt. Ltd.",
-      logo: { "@type": "ImageObject", url: settings?.logo_url || "https://webcreation.com.np/logo.png" },
+      "@id": `${baseUrl}/#organization`,
+      "name": settings?.site_name || "Web Creation Nepal",
+      "url": baseUrl,
+      "logo": {
+        "@type": "ImageObject",
+        "url": logoUrl
+      },
+      "sameAs": sameAs
     },
-    hasPart: blogs.map((b) => ({
-      "@type": "Blog",
-      name: b.name,
-      description: b.description,
-      url: `https://webcreation.com.np/blogs/${b.slug}`,
-    })),
+    {
+      "@type": "WebSite",
+      "@id": `${baseUrl}/#website`,
+      "url": baseUrl,
+      "name": settings?.site_name || "Web Creation Nepal",
+      "publisher": { "@id": `${baseUrl}/#organization` },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": `${baseUrl}/blogs?search={search_term_string}`,
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": `${baseUrl}/#breadcrumb`,
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": baseUrl
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Blogs",
+          "item": baseUrl
+        }
+      ]
+    },
+    {
+      "@type": "ItemList",
+      "@id": `${baseUrl}/#itemlist`,
+      "name": "Blog Channels",
+      "numberOfItems": blogs.length,
+      "itemListElement": blogs.map((b, idx) => ({
+        "@type": "ListItem",
+        "position": idx + 1,
+        "item": {
+          "@type": "Blog",
+          "name": b.name,
+          "description": b.excerpt || b.name,
+          "url": `${baseUrl}/blogs/${b.slug}`
+        }
+      }))
+    }
+  ];
+
+  const graph = {
+    "@context": "https://schema.org",
+    "@graph": schemas
   };
+
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(graph) }}
     />
   );
 }
@@ -173,7 +236,7 @@ export default async function HomePage({ searchParams }: PageProps) {
             backgroundSize: "32px 32px",
           }}
         />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
+        <div className="relative max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
           <h1
             id="blog-title"
             className="text-3xl sm:text-4xl  mb-3 animate-in fade-in duration-300"
@@ -188,7 +251,7 @@ export default async function HomePage({ searchParams }: PageProps) {
 
       {/* ── Blogs Grid ─────────────────────────────────────────── */}
       <section className="bg-zinc-50 pt-6 sm:pt-8 pb-12 sm:pb-16" aria-label="Blog channels">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
 
           {allBlogs.length === 0 ? (
             <div className="text-center py-24 border border-dashed border-zinc-300 rounded-2xl bg-white">
@@ -212,6 +275,7 @@ export default async function HomePage({ searchParams }: PageProps) {
                       id={blog.id}
                       name={blog.name}
                       slug={blog.slug}
+                      excerpt={blog.excerpt}
                       description={blog.description}
                       image={blog.image}
                       meta_keywords={blog.meta_keywords}
@@ -233,6 +297,7 @@ export default async function HomePage({ searchParams }: PageProps) {
                       id={blog.id}
                       name={blog.name}
                       slug={blog.slug}
+                      excerpt={blog.excerpt}
                       description={blog.description}
                       image={blog.image}
                       meta_keywords={blog.meta_keywords}

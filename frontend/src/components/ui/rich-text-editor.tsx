@@ -1,8 +1,9 @@
 "use client";
 
 import * as React from "react";
-import { Bold, Italic, Underline, List, ListOrdered, Code, Strikethrough, Trash2, Table, Quote } from "lucide-react";
+import { Bold, Italic, Underline, List, ListOrdered, Code, Strikethrough, Trash2, Table, Quote, Link as LinkIcon, Image as ImageIcon, Video } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 
 interface RichTextEditorProps {
   value: string;
@@ -85,6 +86,80 @@ export default function RichTextEditor({
         updateActiveStates();
         editorRef.current.focus();
       }
+    }
+  };
+
+  const handleInsertLink = () => {
+    if (disabled) return;
+    const url = prompt("Enter hyperlink URL (e.g. https://google.com):", "https://");
+    if (!url) return;
+    
+    let finalUrl = url;
+    if (!/^https?:\/\//i.test(finalUrl)) {
+      finalUrl = "https://" + finalUrl;
+    }
+    
+    const selection = window.getSelection();
+    if (selection && selection.toString().length > 0) {
+      document.execCommand("createLink", false, finalUrl);
+      const anchor = selection.anchorNode?.parentElement;
+      if (anchor && anchor.tagName === "A") {
+        anchor.setAttribute("target", "_blank");
+        anchor.setAttribute("rel", "noopener noreferrer");
+        anchor.classList.add("text-blue-600", "underline", "hover:text-blue-800");
+      }
+    } else {
+      const html = `<a href="${finalUrl}" target="_blank" rel="noopener noreferrer" class="text-blue-600 underline hover:text-blue-800">${finalUrl}</a>`;
+      document.execCommand("insertHTML", false, html);
+    }
+    handleInput();
+  };
+
+  const handleInsertImage = () => {
+    if (disabled) return;
+    const url = prompt("Enter image URL:");
+    if (!url) return;
+    const alt = prompt("Enter image alt text:", "Blog Image");
+    
+    const html = `<div class="my-6 max-w-full overflow-hidden flex flex-col items-center gap-2"><img src="${url}" alt="${alt || ""}" class="rounded-xl border border-zinc-200/80 max-h-[450px] object-cover" /></div><p><br></p>`;
+    document.execCommand("insertHTML", false, html);
+    handleInput();
+  };
+
+  const handleInsertYouTube = () => {
+    if (disabled) return;
+    const input = prompt("Paste YouTube URL or Embed iframe code:");
+    if (!input) return;
+
+    let embedUrl = "";
+    if (input.includes("<iframe")) {
+      const match = input.match(/src=["']([^"']+)["']/);
+      if (match) embedUrl = match[1];
+    } else {
+      const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+      const match = input.match(regExp);
+      const videoId = (match && match[2].length === 11) ? match[2] : null;
+      if (videoId) {
+        embedUrl = `https://www.youtube.com/embed/${videoId}`;
+      }
+    }
+
+    if (embedUrl) {
+      const html = `
+        <div class="my-8 aspect-video w-full rounded-2xl overflow-hidden border border-zinc-200/80 shadow-md">
+          <iframe
+            src="${embedUrl}"
+            class="w-full h-full"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+        </div>
+        <p><br></p>
+      `;
+      document.execCommand("insertHTML", false, html);
+      handleInput();
+    } else {
+      toast.error("Could not parse YouTube video URL. Please check the format.");
     }
   };
 
@@ -268,6 +343,70 @@ export default function RichTextEditor({
               <Quote className="h-4 w-4" />
             </button>
 
+            <span className="h-4 w-px bg-zinc-300 dark:bg-zinc-800 mx-1" />
+
+            <button
+              type="button"
+              onClick={handleInsertLink}
+              className="p-1.5 rounded hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-350 cursor-pointer"
+              title="Insert Link"
+            >
+              <LinkIcon className="h-4 w-4" />
+            </button>
+
+            <button
+              type="button"
+              onClick={handleInsertImage}
+              className="p-1.5 rounded hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-350 cursor-pointer"
+              title="Insert Image"
+            >
+              <ImageIcon className="h-4 w-4" />
+            </button>
+
+            <button
+              type="button"
+              onClick={handleInsertYouTube}
+              className="p-1.5 rounded hover:bg-zinc-200 dark:hover:bg-zinc-800 text-[#ff0000] cursor-pointer"
+              title="Insert YouTube Video"
+            >
+              <Video className="h-4 w-4" />
+            </button>
+
+            <span className="h-4 w-px bg-zinc-300 dark:bg-zinc-800 mx-1" />
+
+            <button
+              type="button"
+              onClick={() => executeCommand("formatBlock", "<h1>")}
+              className="p-1.5 px-2 rounded hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-350 cursor-pointer text-xs font-black"
+              title="Heading 1"
+            >
+              H1
+            </button>
+            <button
+              type="button"
+              onClick={() => executeCommand("formatBlock", "<h2>")}
+              className="p-1.5 px-2 rounded hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-350 cursor-pointer text-xs font-extrabold"
+              title="Heading 2"
+            >
+              H2
+            </button>
+            <button
+              type="button"
+              onClick={() => executeCommand("formatBlock", "<h3>")}
+              className="p-1.5 px-2 rounded hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-350 cursor-pointer text-xs font-bold"
+              title="Heading 3"
+            >
+              H3
+            </button>
+            <button
+              type="button"
+              onClick={() => executeCommand("formatBlock", "<h4>")}
+              className="p-1.5 px-2 rounded hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-350 cursor-pointer text-xs font-semibold"
+              title="Heading 4"
+            >
+              H4
+            </button>
+
             <button
               type="button"
               onClick={() => setShowTableModal(true)}
@@ -299,6 +438,10 @@ export default function RichTextEditor({
           className={cn(
             "max-w-none min-h-[220px] p-4 outline-none text-sm text-zinc-900 dark:text-slate-100 focus:outline-none overflow-y-auto leading-relaxed whitespace-pre-wrap break-words",
             "after:content-[attr(data-placeholder)] after:text-zinc-400 dark:after:text-zinc-550 after:pointer-events-none empty:after:inline-block after:hidden empty:after:block",
+            "[&_h1]:text-2xl [&_h1]:font-black [&_h1]:mt-4 [&_h1]:mb-2 [&_h1]:text-zinc-900 dark:[&_h1]:text-white",
+            "[&_h2]:text-xl [&_h2]:font-extrabold [&_h2]:mt-4 [&_h2]:mb-2 [&_h2]:text-zinc-900 dark:[&_h2]:text-white",
+            "[&_h3]:text-lg [&_h3]:font-bold [&_h3]:mt-3 [&_h3]:mb-1.5 [&_h3]:text-zinc-900 dark:[&_h3]:text-white",
+            "[&_h4]:text-base [&_h4]:font-semibold [&_h4]:mt-3 [&_h4]:mb-1.5 [&_h4]:text-zinc-900 dark:[&_h4]:text-white",
             "[&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-3 [&_ul]:mt-1",
             "[&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:mb-3 [&_ol]:mt-1",
             "[&_li]:mb-1",

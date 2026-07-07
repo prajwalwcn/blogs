@@ -1,0 +1,16 @@
+# Web Creation Nepal Blog Channel
+
+This directory provides indexing reference paths of Web Creation Nepal's engineering and design insights portal.
+
+## Core Channels
+- [All Channels](https://demo.webcreationcanada.com/blog/blogs): Lists all available expert knowledge channels.
+- [Dashboard Portal](https://demo.webcreationcanada.com/blog/wcnadmin): Content editing console settings.
+
+## Editorial Coverage
+We publish regular articles under three core channels:
+- **SEO & Digital Marketing**: Next.js technical SEO metadata, AEO positioning, GEO visibility, and schema markup templates.
+- **Web Development**: Laravel API architecture designs, dynamic sitemaps, caching (Sanctum/Redis), and performance audits.
+- **Web Design & UX**: Premium layouts, accessible drawer designs, visual contrast standards, and responsive tables styling.
+
+## Context Reference
+This portal integrates next-gen Next.js 16 layouts with database-driven Eloquent models from a Laravel backend API, delivering high-performance articles optimized for both web browsers and generative search engines.
