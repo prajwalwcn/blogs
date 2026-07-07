@@ -27,7 +27,8 @@ interface WebsiteSettings {
 }
 
 const resolveLogoUrl = (url?: string | null) => {
-  if (!url) return "/logo.png";
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+  if (!url) return `${basePath}/logo.png`;
   if (url.startsWith("http://") || url.startsWith("https://")) {
     return url;
   }
@@ -99,6 +100,26 @@ export default function SiteNavbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  const primaryPhone = settings?.phones?.length 
+    ? settings.phones[0].replace(/[^0-9+]/g, "") 
+    : "+9779851029233";
+
+  const drawerSupportItems = React.useMemo(() => {
+    const rawHours = settings?.office_hours || "Sunday – Friday: 09:00 AM – 06:00 PM";
+    const cleanHours = rawHours
+      .replace(/Satssssssurday/gi, "Saturday")
+      .replace(/:\s*09:00\s*AM\s*-\s*PM/gi, ": 09:00 AM – 06:00 PM");
+
+    const emailText = settings?.emails?.length ? settings.emails[0] : "contact@webcreation.com.np";
+    const phoneText = settings?.phones?.length ? settings.phones.join(" / ") : "977-01-5343968 / 9851029233";
+
+    return [
+      { icon: Phone, text: phoneText, href: `tel:${primaryPhone}` },
+      { icon: Mail,  text: emailText, href: `mailto:${emailText}` },
+      { icon: Clock, text: cleanHours, href: null },
+    ];
+  }, [settings, primaryPhone]);
+
   React.useEffect(() => {
     if (settings?.favicon_url) {
       let link: HTMLLinkElement | null = document.querySelector("link[rel*='icon']");
@@ -134,6 +155,8 @@ export default function SiteNavbar() {
               <img
                 src={resolveLogoUrl(settings?.logo_url)}
                 alt={settings?.site_name || "Web Creation Nepal Private Limited"}
+                width={240}
+                height={65}
                 className="h-[45px] sm:h-[55px] md:h-[60px] lg:h-[65px] w-auto object-contain"
               />
             </Link>
@@ -146,6 +169,8 @@ export default function SiteNavbar() {
                 <img
                   src="https://www.webcreationnepal.com/images/icons/phone.png"
                   alt="Phone"
+                  width={24}
+                  height={24}
                   className="h-6 w-6 object-contain shrink-0"
                   onError={() => setPhoneIconError(true)}
                 />
@@ -156,9 +181,12 @@ export default function SiteNavbar() {
                 <p className="text-[12px] font-semibold text-[#1f5b94] uppercase tracking-wide">
                   Phone Support
                 </p>
-                <p className="font-roboto-condensed-custom font-bold text-[15px] leading-[28px] text-[rgb(75,75,75)] whitespace-nowrap">
+                <a
+                  href={`tel:${primaryPhone}`}
+                  className="font-roboto-condensed-custom font-bold text-[15px] leading-[28px] text-[rgb(75,75,75)] hover:text-blue-600 transition-colors whitespace-nowrap block"
+                >
                   {settings?.phones?.length ? settings.phones.join(" / ") : "977-01-5343968 / 9851029233"}
-                </p>
+                </a>
               </div>
             </div>
 
@@ -168,6 +196,8 @@ export default function SiteNavbar() {
                 <img
                   src="https://www.webcreationnepal.com/images/icons/time.png"
                   alt="Time"
+                  width={24}
+                  height={24}
                   className="h-6 w-6 object-contain shrink-0"
                   onError={() => setTimeIconError(true)}
                 />
@@ -190,6 +220,8 @@ export default function SiteNavbar() {
                 <img
                   src="https://www.webcreationnepal.com/images/icons/email.png"
                   alt="Email"
+                  width={24}
+                  height={24}
                   className="h-6 w-6 object-contain shrink-0"
                   onError={() => setEmailIconError(true)}
                 />
@@ -200,16 +232,19 @@ export default function SiteNavbar() {
                 <p className="text-[12px] font-semibold text-[#1f5b94] uppercase tracking-wide">
                   Email Support
                 </p>
-                <p className="font-roboto-condensed-custom font-bold text-[15px] leading-[28px] text-[rgb(75,75,75)] whitespace-nowrap">
+                <a
+                  href={`mailto:${settings?.emails?.length ? settings.emails[0] : "contact@webcreation.com.np"}`}
+                  className="font-roboto-condensed-custom font-bold text-[15px] leading-[28px] text-[rgb(75,75,75)] hover:text-blue-600 transition-colors whitespace-nowrap block"
+                >
                   {settings?.emails?.length ? settings.emails[0] : "contact@webcreation.com.np"}
-                </p>
+                </a>
               </div>
             </div>
 
             {/* Get a Quote CTA Button (Desktop) */}
             <Link
               href="#contact-section"
-              className="hidden lg:inline-flex items-center justify-center px-5 py-2.5 bg-[#ff7b00] hover:bg-[#e06c00] text-white font-extrabold uppercase text-[11px] tracking-widest rounded-full transition-all duration-200 shrink-0 ml-3 shadow-sm hover:shadow"
+              className="hidden lg:inline-flex items-center justify-center px-5 py-2.5 bg-[#d35400] hover:bg-[#ba4a00] text-white font-extrabold uppercase text-[11px] tracking-widest rounded-full transition-all duration-200 shrink-0 ml-3 shadow-sm hover:shadow"
             >
               Get a Quote
             </Link>
@@ -253,11 +288,11 @@ export default function SiteNavbar() {
           {/* Drawer Header - Sleek */}
           <div className="flex items-center justify-between px-6 py-5 border-b border-zinc-50 shrink-0">
             <span className="text-[11px] font-bold text-zinc-400 uppercase tracking-widest">
-              Menu
+              
             </span>
             <button
               onClick={() => setMobileOpen(false)}
-              className="h-8 w-8 flex items-center justify-center rounded-full bg-zinc-50 hover:bg-zinc-100 transition-colors text-zinc-500"
+              className="h-8 w-8 flex items-center justify-center hover:cursor-pointer rounded-full bg-red-50 hover:bg-red-100 transition-colors text-red-600 hover:text-red-700"
               aria-label="Close navigation menu"
             >
               <X className="h-4.5 w-4.5" strokeWidth={1.8} />
@@ -266,54 +301,85 @@ export default function SiteNavbar() {
 
           {/* Navigation Links List - Modern & Minimal */}
           <ul className="px-3 py-6 space-y-0.5 shrink-0" role="list">
-            {navItems.map((link) => (
-              <li key={link.url}>
-                <Link
-                  href={link.url}
-                  onClick={() => setMobileOpen(false)}
-                  className="flex items-center gap-3 px-5 py-3 text-[15px] font-semibold text-zinc-700 hover:text-brand-orange hover:bg-zinc-50/60 rounded-lg transition-all duration-150 hover:translate-x-0.5"
-                >
+            {navItems.map((link) => {
+              const isInternal =
+                link.url.startsWith("/blogs") ||
+                link.url.startsWith("/tags") ||
+                link.url.startsWith("/authors") ||
+                link.url.startsWith("/admin") ||
+                link.url === "/";
+
+              const itemClass = "flex items-center gap-3 px-5 py-3 text-[17px] font-semibold text-zinc-700 hover:text-brand-orange hover:bg-zinc-50/60 rounded-lg transition-all duration-150 hover:translate-x-0.5";
+
+              const content = (
+                <>
                   {link.image_url && (
                     <img
                       src={link.image_url}
                       alt=""
-                      className="h-5 w-5 object-contain shrink-0 opacity-80"
+                      className="h-7 w-7 object-contain shrink-0 opacity-95"
                       onError={(e) => {
                         (e.target as HTMLElement).style.display = "none";
                       }}
                     />
                   )}
                   <span>{link.label}</span>
-                </Link>
-              </li>
-            ))}
+                </>
+              );
+
+              return (
+                <li key={link.url}>
+                  {isInternal ? (
+                    <Link href={link.url} onClick={() => setMobileOpen(false)} className={itemClass}>
+                      {content}
+                    </Link>
+                  ) : (
+                    <a href={link.url} className={itemClass}>
+                      {content}
+                    </a>
+                  )}
+                </li>
+              );
+            })}
           </ul>
         </div>
 
-        {/* Contact info & CTA - Elegant & Clean (No gray box) */}
-        <div className="bg-white border-t border-zinc-100 p-6 space-y-6 shrink-0">
+        {/* Contact info & CTA - Elegant & Clean (Contrasted box with high legibility) */}
+        <div className="bg-[#f8fafc] border-t border-zinc-200/80 p-6 space-y-5 shrink-0 shadow-[0_-2px_10px_rgba(0,0,0,0.015)]">
           <Link
             href="#contact-section"
             onClick={() => setMobileOpen(false)}
-            className="w-full flex items-center justify-center py-2.5 bg-[#ff7b00] hover:bg-[#e06c00] text-white font-extrabold uppercase text-[11px] tracking-widest rounded-full transition-all duration-200"
+            className="w-full flex items-center justify-center py-2.5 bg-[#d35400] hover:bg-[#ba4a00] text-white font-extrabold uppercase text-[11px] tracking-widest rounded-full transition-all duration-200"
           >
             Get a Quote
           </Link>
 
           <div className="space-y-3 pt-2">
-            <p className="text-[9px] font-bold text-zinc-400 uppercase tracking-widest">
+            <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">
               Contact Support
             </p>
-            {[
-              { icon: Phone, text: settings?.phones?.length ? settings.phones.join(" / ") : "977-01-5343968 / 9851029233" },
-              { icon: Mail,  text: settings?.emails?.length ? settings.emails[0] : "contact@webcreation.com.np" },
-              { icon: Clock, text: settings?.office_hours || "Sunday – Friday: 09:00 – 18:00" },
-            ].map(({ icon: Icon, text }) => (
-              <div key={text} className="flex items-start gap-2.5 text-xs text-zinc-500 font-medium leading-relaxed">
-                <Icon className="h-3.8 w-3.8 text-zinc-400 shrink-0 mt-0.5" strokeWidth={1.8} />
-                <span>{text}</span>
-              </div>
-            ))}
+            {drawerSupportItems.map(({ icon: Icon, text, href }) => {
+              const content = (
+                <>
+                  <Icon className="h-4.5 w-4.5 text-[#1f5b94] shrink-0 mt-0.5" strokeWidth={1.8} />
+                  <span>{text}</span>
+                </>
+              );
+
+              return href ? (
+                <a
+                  key={text}
+                  href={href}
+                  className="flex items-start gap-2.5 text-xs text-zinc-700 hover:text-blue-600 font-semibold leading-relaxed transition-colors cursor-pointer"
+                >
+                  {content}
+                </a>
+              ) : (
+                <div key={text} className="flex items-start gap-2.5 text-xs text-zinc-700 font-semibold leading-relaxed">
+                  {content}
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

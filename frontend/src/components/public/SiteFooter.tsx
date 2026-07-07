@@ -48,8 +48,10 @@ export default function SiteFooter() {
           <div className="mb-4">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={settings?.logo_url || "/logo.png"}
+              src={settings?.logo_url || `${process.env.NEXT_PUBLIC_BASE_PATH || ""}/logo.png`}
               alt={settings?.site_name || "Web Creation Nepal Private Limited"}
+              width={240}
+              height={60}
               className="h-[60px] w-auto object-contain"
             />
           </div>

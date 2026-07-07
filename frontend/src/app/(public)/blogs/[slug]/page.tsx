@@ -391,7 +391,7 @@ export default async function BlogDetailPage({ params }: PageProps) {
 
       {/* ── Breadcrumbs ─────────────────────────────────────────── */}
       <nav className="py-4 border-b border-zinc-200/60" aria-label="Breadcrumb">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center gap-2 text-xs font-semibold text-zinc-500">
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 flex items-center gap-2 text-xs font-semibold text-zinc-500">
           <Link href="/" className="hover:text-[#2665A3] transition-colors">
             Home
           </Link>
@@ -456,6 +456,9 @@ export default async function BlogDetailPage({ params }: PageProps) {
                 title={blog.name}
                 description={blog.excerpt || undefined}
                 url={`${process.env.NEXT_PUBLIC_APP_URL || "https://webcreation.com.np"}/blogs/${blog.slug}`}
+                authorName={blog.author?.name || undefined}
+                readTime={blog.read_time || undefined}
+                imageUrl={blog.image?.url ? resolveImageUrl(blog.image.url) : undefined}
               />
             </div>
 

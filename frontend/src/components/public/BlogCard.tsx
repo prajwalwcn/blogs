@@ -138,7 +138,7 @@ export default function BlogCard({
         
         {/* Category Tag */}
         {category && (
-          <p className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500 mb-2.5">
+          <p className="text-[11px] font-semibold uppercase tracking-wider text-zinc-700 mb-2.5">
             {category}
           </p>
         )}

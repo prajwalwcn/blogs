@@ -8,9 +8,12 @@ interface ShareButtonsProps {
   title: string;
   description?: string;
   url?: string;
+  authorName?: string;
+  readTime?: number | string | null;
+  imageUrl?: string;
 }
 
-export default function ShareButtons({ title, description, url }: ShareButtonsProps) {
+export default function ShareButtons({ title, description, url, authorName, readTime, imageUrl }: ShareButtonsProps) {
   const [copied, setCopied] = useState(false);
 
   const getTargetUrl = () => {
@@ -34,14 +37,19 @@ export default function ShareButtons({ title, description, url }: ShareButtonsPr
   };
 
   const getTwitterShareUrl = () => {
-    const text = description ? `${title} — ${description}` : title;
+    let text = title;
+    if (authorName) text += ` by ${authorName}`;
+    if (readTime) text += ` (${readTime} min read)`;
+    if (description) text += ` — ${description}`;
     return `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(getTargetUrl())}`;
   };
 
   const getWhatsappShareUrl = () => {
-    const text = description 
-      ? `${title}\n\n${description}\n\n${getTargetUrl()}` 
-      : `${title}: ${getTargetUrl()}`;
+    let text = `*${title}*\n`;
+    if (description) text += `${description}\n\n`;
+    if (authorName) text += `👤 Author: ${authorName}\n`;
+    if (readTime) text += `⏱️ Read Time: ${readTime} min read\n`;
+    text += `\nLink: ${getTargetUrl()}`;
     return `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
   };
 

@@ -59,6 +59,11 @@ export default function RootLayout({
       lang="en"
       className={`${hostGrotesk.variable} ${robotoCondensed.variable} h-full antialiased`}
     >
+      <head>
+        <link rel="preconnect" href="https://www.webcreationnepal.com" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      </head>
       <body className="min-h-full flex flex-col font-sans">
         {children}
         <Toaster position="top-right" closeButton richColors />

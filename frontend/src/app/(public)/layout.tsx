@@ -45,7 +45,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
   return (
     <>
       <SiteNavbar />
-      <div className="flex-1 min-h-0">{children}</div>
+      <main id="main-content" className="flex-1 min-h-0">{children}</main>
       {/* <SiteFooter /> */}
       <ContactSection />
       <FloatingContact />
