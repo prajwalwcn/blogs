@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 
 const ContactSection = dynamic(() => import("@/components/public/ContactSection"), {
   ssr: true,
+  loading: () => <div className="w-full bg-[#2665A3] h-[750px] border-t border-blue-700/30" />,
 });
 
 export const metadata: Metadata = {

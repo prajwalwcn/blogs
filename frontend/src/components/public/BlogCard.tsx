@@ -119,6 +119,8 @@ export default function BlogCard({
             alt={image?.alt || name}
             fill
             priority={size === "large"}
+            loading={size === "large" ? "eager" : "lazy"}
+            {...((size === "large" ? { fetchPriority: "high" } : {}) as any)}
             sizes={
               size === "large"
                 ? "(max-width: 640px) 100vw, 50vw"
