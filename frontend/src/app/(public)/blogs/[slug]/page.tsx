@@ -19,6 +19,13 @@ import CategoryList from "@/components/public/CategoryList";
 const rawApiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 const API_URL = rawApiUrl.replace(/\/api\/?$/, "").replace(/\/$/, "");
 
+const formatTableContent = (htmlContent: string) => {
+  if (!htmlContent) return "";
+  return htmlContent
+    .replace(/<table/gi, '<div class="overflow-x-auto w-full border border-zinc-200 rounded-xl my-6"><table class="min-w-full divide-y divide-zinc-200"')
+    .replace(/<\/table>/gi, '</table></div>');
+};
+
 interface BlogSection {
   title: string;
   content: string;
@@ -494,7 +501,7 @@ export default async function BlogDetailPage({ params }: PageProps) {
                       {sec.title}
                     </h2>
                     <div 
-                      dangerouslySetInnerHTML={{ __html: sec.content }} 
+                      dangerouslySetInnerHTML={{ __html: formatTableContent(sec.content) }} 
                       className="blog-content-body text-zinc-750 leading-relaxed text-[15px] sm:text-[16px]"
                     />
                   </article>
@@ -760,10 +767,8 @@ export default async function BlogDetailPage({ params }: PageProps) {
         
         /* Premium Table Styles matching first image with responsiveness */
         .blog-content-body table {
-          display: block;
           width: 100% !important;
-          overflow-x: auto !important;
-          -webkit-overflow-scrolling: touch;
+          table-layout: auto !important;
           border-collapse: separate;
           border-spacing: 0;
           margin: 2rem 0;
@@ -771,15 +776,13 @@ export default async function BlogDetailPage({ params }: PageProps) {
           color: #374151;
           border: 1px solid #e5e7eb;
           border-radius: 8px;
+          overflow: hidden;
         }
-        .blog-content-body table thead tr,
-        .blog-content-body table tr:first-child {
+        .blog-content-body table thead tr {
           background-color: #2665A3;
           color: #ffffff;
         }
-        .blog-content-body table th,
-        .blog-content-body table tr:first-child td,
-        .blog-content-body table tr:first-child th {
+        .blog-content-body table th {
           font-weight: 700;
           text-transform: uppercase;
           letter-spacing: 0.05em;
@@ -787,12 +790,11 @@ export default async function BlogDetailPage({ params }: PageProps) {
           border-bottom: 1px solid #e5e7eb;
           border-right: 1px solid rgba(255, 255, 255, 0.15);
           text-align: center;
+          white-space: nowrap !important;
           background-color: #2665A3;
           color: #ffffff;
         }
-        .blog-content-body table th:last-child,
-        .blog-content-body table tr:first-child td:last-child,
-        .blog-content-body table tr:first-child th:last-child {
+        .blog-content-body table th:last-child {
           border-right: none;
         }
         .blog-content-body table td {
@@ -801,7 +803,7 @@ export default async function BlogDetailPage({ params }: PageProps) {
           border-right: 1px solid #e5e7eb;
           text-align: center;
           vertical-align: middle;
-          background-color: #ffffff;
+          white-space: nowrap !important;
         }
         .blog-content-body table td:last-child {
           border-right: none;
@@ -824,7 +826,6 @@ export default async function BlogDetailPage({ params }: PageProps) {
         }
         /* Highlighted Column Styles matching the budget column */
         .blog-content-body table th.highlight-column,
-        .blog-content-body table tr:first-child td.highlight-column,
         .blog-content-body table tr:first-child th.highlight-column {
           background-color: #709d1e !important;
           color: #ffffff !important;
