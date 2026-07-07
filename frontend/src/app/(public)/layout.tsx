@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import SiteNavbar from "@/components/public/SiteNavbar";
 import FloatingContact from "@/components/public/FloatingContact";
-import ContactSection from "@/components/public/ContactSection";
+import dynamic from "next/dynamic";
+
+const ContactSection = dynamic(() => import("@/components/public/ContactSection"), {
+  ssr: true,
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"),

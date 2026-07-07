@@ -27,6 +27,7 @@ interface WebsiteSettings {
 export default function ContactSection() {
   const [settings, setSettings] = React.useState<WebsiteSettings | null>(null);
   const [loadingSettings, setLoadingSettings] = React.useState(true);
+  const [mapLoaded, setMapLoaded] = React.useState(false);
 
   // Form states
   const [name, setName] = React.useState("");
@@ -284,26 +285,52 @@ export default function ContactSection() {
         </div>
 
         {/* ── Nested Google Map (inside the contact section container) ── */}
-        <div className="w-full rounded-3xl overflow-hidden border border-white/10 shadow-lg relative h-[380px] bg-white/5 [&_iframe]:w-full [&_iframe]:h-full">
-          {settings?.google_map_iframe ? (
-            <div 
-              dangerouslySetInnerHTML={{ 
-                __html: settings.google_map_iframe.includes("title=") 
-                  ? settings.google_map_iframe 
-                  : settings.google_map_iframe.replace(/<iframe/i, '<iframe title="Google Maps Location of Web Creation Nepal"')
-              }} 
-              className="w-full h-full" 
-            />
+        <div className="w-full rounded-3xl overflow-hidden border border-white/10 shadow-lg relative h-[380px] bg-white/5 [&_iframe]:w-full [&_iframe]:h-full flex items-center justify-center">
+          {mapLoaded ? (
+            settings?.google_map_iframe ? (
+              <div 
+                dangerouslySetInnerHTML={{ 
+                  __html: (() => {
+                    let html = settings.google_map_iframe;
+                    if (!html.includes("title=")) {
+                      html = html.replace(/<iframe/i, '<iframe title="Google Maps Location of Web Creation Nepal"');
+                    }
+                    if (!html.includes("loading=")) {
+                      html = html.replace(/<iframe/i, '<iframe loading="lazy"');
+                    }
+                    return html;
+                  })()
+                }} 
+                className="w-full h-full animate-in fade-in duration-300" 
+              />
+            ) : (
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3532.2285994246944!2d85.32185257620353!3d27.702553976189917!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb19a63b2f9011%3A0x446e1074a36f56bc!2sWeb%20Creation%20Nepal!5e0!3m2!1sen!2snp!4v1719811200000!5m2!1sen!2snp"
+                title="Google Maps Location of Web Creation Nepal"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen={true}
+                loading="lazy"
+                className="animate-in fade-in duration-300"
+              />
+            )
           ) : (
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3532.2285994246944!2d85.32185257620353!3d27.702553976189917!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb19a63b2f9011%3A0x446e1074a36f56bc!2sWeb%20Creation%20Nepal!5e0!3m2!1sen!2snp!4v1719811200000!5m2!1sen!2snp"
-              title="Google Maps Location of Web Creation Nepal"
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              allowFullScreen={true}
-              loading="lazy"
-            />
+            <div className="absolute inset-0 bg-gradient-to-br from-slate-900/70 via-slate-800/80 to-[#1f5b94]/40 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center">
+              <div className="h-14 w-14 rounded-full bg-white/10 flex items-center justify-center text-white mb-4 border border-white/20 shadow-inner">
+                <MapPin className="h-7 w-7 text-orange-500 animate-bounce" />
+              </div>
+              <h4 className="text-white font-bold text-lg mb-2">Interactive Map</h4>
+              <p className="text-zinc-300 text-xs max-w-xs mb-5 leading-relaxed">
+                Click below to load the interactive Google Map. This saves data and speeds up your page load.
+              </p>
+              <button
+                onClick={() => setMapLoaded(true)}
+                className="px-6 py-2.5 bg-[#b83d00] hover:bg-[#9c3300] text-white font-extrabold uppercase text-[10px] tracking-widest rounded-full transition-all duration-200 shadow-md hover:shadow-lg hover:-translate-y-0.5 transform active:translate-y-0 cursor-pointer"
+              >
+                Load Interactive Map
+              </button>
+            </div>
           )}
         </div>
 
