@@ -143,7 +143,7 @@ export default function SiteNavbar() {
         )}
       >
         <div className="w-full px-4 sm:px-8 md:px-12 lg:px-16">
-          <div className="flex items-center h-[75px] sm:h-[85px] md:h-[90px] gap-4 lg:gap-6 xl:gap-8">
+          <div className="flex items-center h-[85px] sm:h-[95px] md:h-[105px] lg:h-[110px] gap-4 lg:gap-6 xl:gap-8">
 
             {/* Logo */}
             <Link
@@ -155,9 +155,9 @@ export default function SiteNavbar() {
               <img
                 src={resolveLogoUrl(settings?.logo_url)}
                 alt={settings?.site_name || "Web Creation Nepal Private Limited"}
-                width={240}
-                height={65}
-                className="h-[45px] sm:h-[55px] md:h-[60px] lg:h-[65px] w-auto object-contain"
+                width={266}
+                height={80}
+                className="h-[55px] sm:h-[68px] md:h-[74px] lg:h-[80px] w-auto object-contain"
               />
             </Link>
 

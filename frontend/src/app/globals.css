@@ -152,7 +152,7 @@ body {
 
 /* Scoped layout body properties for the public website pages only */
 .public-layout-container {
-  margin: 10px 0 !important;
+  margin: 0 !important;
   font-family: var(--font-roboto-condensed), sans-serif !important;
   font-size: 18px !important;
   font-weight: 400 !important;
@@ -176,27 +176,18 @@ button.text-xs {
 
 
 
-/* General page layout headings use Host Grotesk - scoped only to public frontend layout */
+/* General page layout headings use Alumni Sans - scoped only to public frontend layout */
+.public-layout-container h1,
 .public-layout-container h2,
 .public-layout-container h3,
 .public-layout-container h4,
 .public-layout-container h5,
 .public-layout-container h6 {
-  font-family: var(--font-host-grotesk), system-ui, -apple-system, sans-serif !important;
-  font-weight: 800 !important;
-  color: rgb(38, 38, 38) !important;
-  letter-spacing: normal !important;
-}
-
-/* Only the main article title and headings inside the blog body use Alumni Sans - scoped only to public frontend layout */
-.public-layout-container h1,
-.public-layout-container .blog-content-body h2,
-.public-layout-container .blog-content-body h3,
-.public-layout-container .blog-content-body h4 {
-  font-family: var(--font-alumni-sans), sans-serif !important;
+  font-family: var(--font-alumni-sans), system-ui, -apple-system, sans-serif !important;
   font-weight: 700 !important;
   color: rgb(38, 38, 38) !important;
-  letter-spacing: 0.03em !important;
+  letter-spacing: 0 !important;
+  line-height: 1.15 !important;
 }
 
 /* Ensure headings inside white-text parent containers stay white - scoped only to public frontend layout */
@@ -211,7 +202,6 @@ button.text-xs {
 
 .public-layout-container h1 {
   font-size: 42px !important;
-  line-height: 52px !important;
 }
 
 /* Custom internal spacing for blog content - scoped only to public frontend layout */
