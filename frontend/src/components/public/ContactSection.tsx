@@ -231,7 +231,7 @@ export default function ContactSection() {
 
             {/* Social Links Section */}
             <div className="mt-8 pt-6 border-t border-white/10">
-              <span className="block text-[11px] font-bold text-white/80 uppercase tracking-wider mb-3">
+              <span className="block text-[14px] font-bold text-white/80 uppercase tracking-wider mb-3">
                 Follow us on social media :
               </span>
               <div className="flex flex-wrap items-center gap-2.5">

@@ -151,13 +151,12 @@ export default function SiteNavbar() {
               className="shrink-0 flex items-center"
               aria-label={`${settings?.site_name || "Web Creation Nepal"} — Home`}
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={resolveLogoUrl(settings?.logo_url)}
                 alt={settings?.site_name || "Web Creation Nepal Private Limited"}
                 width={266}
                 height={80}
-                className="h-[55px] sm:h-[68px] md:h-[74px] lg:h-[80px] w-auto object-contain"
+                className="h-[70px] sm:h-[75px] md:h-[78px] lg:h-[80px] w-auto object-contain"
               />
             </Link>
 
@@ -355,7 +354,7 @@ export default function SiteNavbar() {
           </Link>
 
           <div className="space-y-3 pt-2">
-            <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">
+            <p className="text-[14px] font-bold text-zinc-500 uppercase tracking-widest">
               Contact Support
             </p>
             {drawerSupportItems.map(({ icon: Icon, text, href }) => {
@@ -370,12 +369,12 @@ export default function SiteNavbar() {
                 <a
                   key={text}
                   href={href}
-                  className="flex items-start gap-2.5 text-xs text-zinc-700 hover:text-blue-600 font-semibold leading-relaxed transition-colors cursor-pointer"
+                  className="flex items-start gap-2.5 text-[14px] text-zinc-700 hover:text-blue-600 font-semibold leading-relaxed transition-colors cursor-pointer"
                 >
                   {content}
                 </a>
               ) : (
-                <div key={text} className="flex items-start gap-2.5 text-xs text-zinc-700 font-semibold leading-relaxed">
+                <div key={text} className="flex items-start gap-2.5 text-[14px] text-zinc-700 font-semibold leading-relaxed">
                   {content}
                 </div>
               );
