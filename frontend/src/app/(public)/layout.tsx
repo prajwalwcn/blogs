@@ -48,12 +48,12 @@ export const metadata: Metadata = {
 
 export default function PublicLayout({ children }: { children: React.ReactNode }) {
   return (
-    <>
+    <div className="public-layout-container flex flex-col min-h-screen">
       <SiteNavbar />
       <main id="main-content" className="flex-1 min-h-0">{children}</main>
       {/* <SiteFooter /> */}
       <ContactSection />
       <FloatingContact />
-    </>
+    </div>
   );
 }

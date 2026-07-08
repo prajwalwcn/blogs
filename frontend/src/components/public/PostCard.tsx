@@ -36,7 +36,7 @@ function formatDate(dateStr?: string | null) {
 export default function PostCard({ post, blogSlug, size = "small" }: PostCardProps) {
   const category = post.categories?.[0];
   const date = formatDate(post.published_at);
-  const href = `/blogs/${blogSlug}/${post.slug}`;
+  const href = `/${blogSlug}/${post.slug}`;
 
   return (
     <article

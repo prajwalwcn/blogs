@@ -21,6 +21,7 @@ class Blog extends Model
     protected $fillable = [
         'author_id',
         'read_time',
+        'priority',
         'name',
         'slug',
         'excerpt',

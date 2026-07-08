@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Host_Grotesk, Roboto_Condensed } from "next/font/google";
+import { Host_Grotesk, Roboto_Condensed, Alumni_Sans } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 
@@ -12,6 +12,12 @@ const hostGrotesk = Host_Grotesk({
 const robotoCondensed = Roboto_Condensed({
   weight: ["300", "400", "700"],
   variable: "--font-roboto-condensed",
+  subsets: ["latin"],
+});
+
+const alumniSans = Alumni_Sans({
+  weight: ["300", "400", "500", "600", "700", "800"],
+  variable: "--font-alumni-sans",
   subsets: ["latin"],
 });
 
@@ -57,7 +63,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${hostGrotesk.variable} ${robotoCondensed.variable} h-full antialiased`}
+      className={`${hostGrotesk.variable} ${robotoCondensed.variable} ${alumniSans.variable} h-full antialiased`}
     >
       <head>
         <link rel="preconnect" href="https://www.webcreationnepal.com" />

@@ -48,18 +48,48 @@ export default function RichTextEditor({
     });
   }, [colsCount]);
 
+  const applyInlineStyles = React.useCallback(() => {
+    if (editorRef.current) {
+      const headings = editorRef.current.querySelectorAll("h1, h2, h3, h4, h5, h6");
+      headings.forEach((h) => {
+        const el = h as HTMLElement;
+        el.style.setProperty("font-family", "var(--font-roboto-condensed), sans-serif", "important");
+        el.style.setProperty("font-weight", "700", "important");
+        el.style.setProperty("color", "#262626", "important");
+        el.style.setProperty("letter-spacing", "normal", "important");
+        
+        const tagName = el.tagName.toLowerCase();
+        if (tagName === "h1") {
+          el.style.setProperty("font-size", "22px", "important");
+          el.style.setProperty("line-height", "1.3", "important");
+        } else if (tagName === "h2") {
+          el.style.setProperty("font-size", "19px", "important");
+          el.style.setProperty("line-height", "1.3", "important");
+        } else if (tagName === "h3") {
+          el.style.setProperty("font-size", "17px", "important");
+          el.style.setProperty("line-height", "1.3", "important");
+        } else if (tagName === "h4") {
+          el.style.setProperty("font-size", "15px", "important");
+          el.style.setProperty("line-height", "1.3", "important");
+        }
+      });
+    }
+  }, []);
+
   // Keep editor content in sync with external value updates (like API load)
   React.useEffect(() => {
     if (editorRef.current) {
       if (value !== lastValueRef.current) {
         editorRef.current.innerHTML = value || "";
         lastValueRef.current = value;
+        applyInlineStyles();
       }
     }
-  }, [value]);
+  }, [value, applyInlineStyles]);
 
   const handleInput = () => {
     if (editorRef.current) {
+      applyInlineStyles();
       const html = editorRef.current.innerHTML;
       lastValueRef.current = html;
       onChange(html);
@@ -70,6 +100,7 @@ export default function RichTextEditor({
   const executeCommand = (command: string, valueStr: string = "") => {
     if (disabled) return;
     document.execCommand(command, false, valueStr);
+    applyInlineStyles();
     handleInput();
     if (editorRef.current) {
       editorRef.current.focus();
@@ -256,6 +287,25 @@ export default function RichTextEditor({
           disabled && "opacity-80 bg-zinc-50 dark:bg-zinc-955/20"
         )}
       >
+        {/* Style block to force heading sizes inside editor content directly */}
+        <style dangerouslySetInnerHTML={{ __html: `
+          .rich-text-editor-content h1,
+          .rich-text-editor-content h2,
+          .rich-text-editor-content h3,
+          .rich-text-editor-content h4,
+          .rich-text-editor-content h5,
+          .rich-text-editor-content h6 {
+            font-family: var(--font-roboto-condensed), sans-serif !important;
+            font-weight: 700 !important;
+            color: rgb(38, 38, 38) !important;
+            letter-spacing: normal !important;
+          }
+          .rich-text-editor-content h1 { font-size: 20px !important; line-height: 1.3 !important; }
+          .rich-text-editor-content h2 { font-size: 17px !important; line-height: 1.3 !important; }
+          .rich-text-editor-content h3 { font-size: 15px !important; line-height: 1.3 !important; }
+          .rich-text-editor-content h4 { font-size: 14px !important; line-height: 1.3 !important; }
+        `}} />
+
         {/* Toolbar (Hidden when disabled) */}
         {!disabled && (
           <div className="flex flex-wrap items-center gap-1 p-1.5 border-b border-zinc-200/80 dark:border-zinc-800 bg-zinc-50/55 dark:bg-zinc-950/40 select-none">
@@ -436,12 +486,13 @@ export default function RichTextEditor({
           onMouseUp={updateActiveStates}
           data-placeholder={placeholder}
           className={cn(
+            "rich-text-editor-content",
             "max-w-none min-h-[220px] p-4 outline-none text-sm text-zinc-900 dark:text-slate-100 focus:outline-none overflow-y-auto leading-relaxed whitespace-pre-wrap break-words",
             "after:content-[attr(data-placeholder)] after:text-zinc-400 dark:after:text-zinc-550 after:pointer-events-none empty:after:inline-block after:hidden empty:after:block",
-            "[&_h1]:text-2xl [&_h1]:font-black [&_h1]:mt-4 [&_h1]:mb-2 [&_h1]:text-zinc-900 dark:[&_h1]:text-white",
-            "[&_h2]:text-xl [&_h2]:font-extrabold [&_h2]:mt-4 [&_h2]:mb-2 [&_h2]:text-zinc-900 dark:[&_h2]:text-white",
-            "[&_h3]:text-lg [&_h3]:font-bold [&_h3]:mt-3 [&_h3]:mb-1.5 [&_h3]:text-zinc-900 dark:[&_h3]:text-white",
-            "[&_h4]:text-base [&_h4]:font-semibold [&_h4]:mt-3 [&_h4]:mb-1.5 [&_h4]:text-zinc-900 dark:[&_h4]:text-white",
+            "[&_h1]:text-[17px] [&_h1]:font-bold [&_h1]:mt-3 [&_h1]:mb-1.5 [&_h1]:text-zinc-900 dark:[&_h1]:text-white",
+            "[&_h2]:text-[15px] [&_h2]:font-bold [&_h2]:mt-3 [&_h2]:mb-1 [&_h2]:text-zinc-900 dark:[&_h2]:text-white",
+            "[&_h3]:text-[14px] [&_h3]:font-semibold [&_h3]:mt-2 [&_h3]:mb-1 [&_h3]:text-zinc-900 dark:[&_h3]:text-white",
+            "[&_h4]:text-[13px] [&_h4]:font-semibold [&_h4]:mt-2 [&_h4]:mb-1 [&_h4]:text-zinc-900 dark:[&_h4]:text-white",
             "[&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-3 [&_ul]:mt-1",
             "[&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:mb-3 [&_ol]:mt-1",
             "[&_li]:mb-1",
@@ -457,6 +508,10 @@ export default function RichTextEditor({
           )}
           style={{
             minHeight: "220px",
+            fontFamily: "var(--font-roboto-condensed), sans-serif",
+            fontSize: "16px",
+            fontWeight: "400",
+            lineHeight: "1.6",
           }}
         />
       </div>

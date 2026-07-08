@@ -104,16 +104,16 @@ export default function ContactSection() {
           <div className="lg:col-span-5 flex flex-col justify-between relative overflow-hidden">
             <div className="relative z-10 space-y-6">
               <div>
-                <span className="block text-[11px] font-bold text-zinc-50 uppercase tracking-widest mb-1.5">
+                <span className="block text-sm font-black text-blue-200 uppercase tracking-widest mb-2">
                   CONTACT US
                 </span>
-                <h3 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white leading-tight">
+                <h3 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white leading-tight">
                   Feel Free To Contact & Get In Touch !
                 </h3>
               </div>
               
               <p className="text-xs text-white/85 leading-relaxed max-w-sm">
-                Omnis quis sunt quasi aliquet senectus tenetur dolor! Omnis! Corrupti, est arcu, felis, molestiae impedit vel felis eget.
+                We are always here to assist you. Whether you have questions, feedback, or need support, our team is ready to help. Reach out to us via email, phone, or visit our office. We look forward to connecting with you!
               </p>
 
               {/* Pill-shaped Information Items */}

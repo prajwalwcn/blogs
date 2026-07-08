@@ -87,6 +87,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/blogs', [BlogController::class, 'store']);
     Route::put('/blogs/{blog}', [BlogController::class, 'update']);
     Route::delete('/blogs/{blog}', [BlogController::class, 'destroy']);
+    Route::post('/blogs/reorder', [BlogController::class, 'reorder']);
 
     // Authors Admin CRUD
     Route::post('/authors', [AuthorController::class, 'store']);

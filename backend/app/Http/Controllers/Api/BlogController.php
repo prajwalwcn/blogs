@@ -278,6 +278,24 @@ class BlogController extends Controller
     }
 
     /**
+     * Reorder blogs by updating their priority field.
+     * Expects: { ordered_ids: [1, 3, 2, ...] }
+     */
+    public function reorder(Request $request): JsonResponse
+    {
+        $request->validate([
+            'ordered_ids' => 'required|array',
+            'ordered_ids.*' => 'integer|exists:blogs,id',
+        ]);
+
+        foreach ($request->ordered_ids as $priority => $id) {
+            Blog::where('id', $id)->update(['priority' => $priority + 1]);
+        }
+
+        return response()->json(['message' => 'Blogs reordered successfully']);
+    }
+
+    /**
      * Remove the specified blog from storage.
      */
     public function destroy(Blog $blog): JsonResponse

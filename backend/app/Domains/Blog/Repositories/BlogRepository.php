@@ -18,7 +18,7 @@ class BlogRepository
     public function all(): Collection
     {
         return Cache::remember('blogs:all', 86400, function () {
-            return Blog::with(['author', 'categories', 'tags'])->get();
+            return Blog::with(['author', 'categories', 'tags'])->orderBy('priority')->get();
         });
     }
 

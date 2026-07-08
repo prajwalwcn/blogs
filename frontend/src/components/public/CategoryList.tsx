@@ -23,9 +23,9 @@ export default function CategoryList({ categories }: CategoryListProps) {
 
   return (
     <div className="bg-[#f4f7fc] border border-zinc-200/70 rounded-2xl p-6 shadow-sm">
-      <h3 className="text-[20px] font-bold text-zinc-900 tracking-tight mb-5 pb-3.5 border-b border-zinc-200/70 flex items-center justify-between">
+      <h3 className="text-[22px] font-bold text-zinc-900 tracking-tight mb-5 pb-3.5 border-b border-zinc-200/70 flex items-center justify-between">
         <span>Categories</span>
-        <span className="text-[11px] font-bold text-zinc-400 bg-zinc-200/60 px-2 py-0.5 rounded-full">
+        <span className="text-xs font-bold text-zinc-400 bg-zinc-200/60 px-2 py-0.5 rounded-full">
           {categories.length}
         </span>
       </h3>
@@ -34,7 +34,7 @@ export default function CategoryList({ categories }: CategoryListProps) {
           <li key={cat.id}>
             <Link
               href="/"
-              className="flex items-center gap-3 group text-[14px] font-semibold text-zinc-700 hover:text-[#2665A3] transition-colors"
+              className="flex items-center gap-3 group text-[16px] font-semibold text-zinc-700 hover:text-[#2665A3] transition-colors"
             >
               <ArrowRightCircle className="h-5 w-5 text-[#5e8347] shrink-0 group-hover:scale-105 transition-transform" />
               <span>{cat.name}</span>
@@ -46,7 +46,7 @@ export default function CategoryList({ categories }: CategoryListProps) {
       {categories.length > 4 && (
         <button
           onClick={() => setExpanded(!expanded)}
-          className="w-full mt-5 pt-3.5 border-t border-zinc-200/50 flex items-center justify-center gap-1.5 text-xs font-bold text-blue-600 hover:text-blue-700 transition-colors uppercase tracking-wider"
+          className="w-full mt-5 pt-3.5 border-t border-zinc-200/50 flex items-center justify-center gap-1.5 text-xs font-bold text-blue-600 hover:text-blue-700 transition-colors uppercase tracking-wider cursor-pointer"
         >
           {expanded ? (
             <>

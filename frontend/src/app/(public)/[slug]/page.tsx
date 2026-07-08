@@ -210,11 +210,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     title: meta?.title || blog.name,
     description: meta?.description || blog.excerpt || "Web Creation Nepal Blog Channel",
     keywords: meta?.keywords || "",
-    alternates: { canonical: `/blogs/${blog.slug}` },
+    alternates: { canonical: `/${blog.slug}` },
     openGraph: {
       title: og?.["og:title"] || blog.name,
       description: og?.["og:description"] || blog.excerpt || "",
-      url: `/blogs/${blog.slug}`,
+      url: `/${blog.slug}`,
       type: "article",
       publishedTime: blog.created_at || undefined,
       authors: [authorName],
@@ -280,7 +280,7 @@ export default async function BlogDetailPage({ params }: PageProps) {
   const protocol = host.includes("localhost") ? "http" : "https";
   const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "/blog";
   const baseUrl = `${protocol}://${host}${basePath}`;
-  const pageUrl = `${baseUrl}/blogs/${blog.slug}`;
+  const pageUrl = `${baseUrl}/${blog.slug}`;
   const logoUrl = settings?.logo_url || `${baseUrl}/logo.png`;
 
   // Get social sameAs profiles
@@ -378,7 +378,7 @@ export default async function BlogDetailPage({ params }: PageProps) {
       "itemListElement": popularBlogs.map((b, idx) => ({
         "@type": "ListItem",
         "position": idx + 1,
-        "url": `${baseUrl}/blogs/${b.slug}`
+        "url": `${baseUrl}/${b.slug}`
       }))
     });
   }
@@ -424,7 +424,7 @@ export default async function BlogDetailPage({ params }: PageProps) {
             </h1>
 
             {/* Meta Row: Author, Read Time, and Share */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 mb-8 border-b border-zinc-200/80">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 mb-4 border-b border-zinc-200/80">
               <div className="flex items-center gap-5">
                 {/* Author */}
                 <div className="flex items-center gap-2.5">
@@ -462,7 +462,7 @@ export default async function BlogDetailPage({ params }: PageProps) {
               <ShareButtons
                 title={blog.name}
                 description={blog.excerpt || undefined}
-                url={`${process.env.NEXT_PUBLIC_APP_URL || "https://webcreation.com.np"}/blogs/${blog.slug}`}
+                url={`${process.env.NEXT_PUBLIC_APP_URL || "https://webcreation.com.np"}/${blog.slug}`}
                 authorName={blog.author?.name || undefined}
                 readTime={blog.read_time || undefined}
                 imageUrl={blog.image?.url ? resolveImageUrl(blog.image.url) : undefined}
@@ -471,7 +471,7 @@ export default async function BlogDetailPage({ params }: PageProps) {
 
             {/* Featured Image */}
             {blog.image?.url && (
-              <div className="relative aspect-[16/9] w-full max-w-full rounded-xl overflow-hidden mb-8 bg-zinc-100 border border-zinc-200/60 shadow-sm">
+              <div className="relative aspect-[16/9] w-full max-w-full rounded-xl overflow-hidden mb-4 bg-zinc-100 border border-zinc-200/60 shadow-sm">
                 <Image
                   src={resolveImageUrl(blog.image.url)}
                   alt={blog.image.alt || blog.name}
@@ -486,23 +486,23 @@ export default async function BlogDetailPage({ params }: PageProps) {
 
             {/* Excerpt */}
             {blog.excerpt && (
-              <p className="text-zinc-800 text-[17px] font-semibold leading-relaxed mb-8 border-l-4 border-[#2665A3] pl-4 italic">
+              <p className="text-zinc-800 text-[17px] font-semibold leading-relaxed mb-4 border-l-4 border-[#2665A3] pl-4 italic">
                 {blog.excerpt}
               </p>
             )}
 
             {/* Repeater Sections Rendering */}
-            <div className="space-y-12">
+            <div className="space-y-6">
               {sections.map((sec, idx) => {
                 const secId = slugify(sec.title);
                 return (
                   <article key={idx} id={secId} className="scroll-mt-24">
-                    <h2 className="text-xl sm:text-[24px] font-semibold text-[#252525] leading-[30px] tracking-tight mb-4 border-b border-zinc-100 pb-2">
+                    <h2 className="text-xl sm:text-[24px] font-semibold text-[#252525] leading-[30px] tracking-tight mb-2 border-b border-zinc-100 pb-2">
                       {sec.title}
                     </h2>
                     <div 
                       dangerouslySetInnerHTML={{ __html: formatTableContent(sec.content) }} 
-                      className="blog-content-body text-zinc-750 leading-relaxed text-[15px] sm:text-[16px]"
+                      className="blog-content-body text-zinc-750 leading-relaxed text-[17px] sm:text-[18px]"
                     />
                   </article>
                 );
@@ -527,32 +527,32 @@ export default async function BlogDetailPage({ params }: PageProps) {
             {/* Related Channels in place of Next/Prev Navigation */}
             {popularBlogs.length > 0 && (
               <div className="mt-12 pt-8 border-y border-zinc-200/80 pb-8">
-                <h3 className="text-lg font-bold text-zinc-900 mb-6">
+                <h3 className="text-2xl font-bold text-zinc-900 mb-6">
                   Related Channels
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   {popularBlogs.slice(0, 2).map((pop) => (
                     <Link
                       key={pop.id}
-                      href={`/blogs/${pop.slug}`}
+                      href={`/${pop.slug}`}
                       className="group flex gap-4 p-4 rounded-xl border border-zinc-200/80 hover:border-brand-orange bg-[#f4f7fc]/25 hover:bg-[#f4f7fc]/50 transition-all duration-200 cursor-pointer shadow-sm hover:shadow"
                     >
                       {pop.image_url && (
                         <div className="relative w-20 h-20 rounded-lg overflow-hidden shrink-0 bg-zinc-150 border border-zinc-200/40">
                           <Image
-                            src={resolveImageUrl(pop.image_url)}
-                            alt={pop.name}
-                            fill
-                            className="object-cover group-hover:scale-102 transition-transform duration-300"
+                             src={resolveImageUrl(pop.image_url)}
+                             alt={pop.name}
+                             fill
+                             className="object-cover group-hover:scale-102 transition-transform duration-300"
                           />
                         </div>
                       )}
                       <div className="flex-1 min-w-0 flex flex-col justify-center">
-                        <h4 className="font-bold text-sm text-zinc-800 group-hover:text-blue-650 leading-snug line-clamp-2 transition-colors">
+                        <h4 className="font-bold text-[15px] text-zinc-800 group-hover:text-blue-650 leading-snug line-clamp-2 transition-colors">
                           {pop.name}
                         </h4>
                         {pop.excerpt && (
-                          <p className="text-[11px] text-zinc-500 line-clamp-2 mt-1 leading-normal">
+                          <p className="text-xs text-zinc-550 line-clamp-2 mt-1 leading-normal">
                             {pop.excerpt}
                           </p>
                         )}
@@ -566,7 +566,7 @@ export default async function BlogDetailPage({ params }: PageProps) {
             {/* FAQ Section */}
             {blog.faq && blog.faq.length > 0 && (
               <div className="mt-12 pt-8 border-t border-zinc-200/80">
-                <h3 className="text-lg font-bold text-zinc-900 mb-6">
+                <h3 className="text-2xl font-bold text-zinc-900 mb-6">
                   Frequently Asked Questions (FAQ)
                 </h3>
                 <div className="space-y-4">
@@ -575,7 +575,7 @@ export default async function BlogDetailPage({ params }: PageProps) {
                       key={idx}
                       className="group border border-zinc-250/80 rounded-xl overflow-hidden [&_summary::-webkit-details-marker]:hidden transition-all duration-300"
                     >
-                      <summary className="flex items-center justify-between gap-4 p-4 font-bold text-[15px] text-zinc-900 bg-[#f4f7fc]/50 cursor-pointer list-none hover:bg-[#f4f7fc] transition-colors">
+                      <summary className="flex items-center justify-between gap-4 p-4 font-bold text-[17px] text-zinc-900 bg-[#f4f7fc]/50 cursor-pointer list-none hover:bg-[#f4f7fc] transition-colors">
                         <span>{item.question}</span>
                         <span className="transition-transform duration-200 group-open:rotate-180 shrink-0">
                           <svg className="h-4 w-4 text-zinc-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -583,7 +583,7 @@ export default async function BlogDetailPage({ params }: PageProps) {
                           </svg>
                         </span>
                       </summary>
-                      <div className="p-4 border-t border-zinc-200/60 text-sm text-zinc-700 leading-relaxed bg-white">
+                      <div className="p-4 border-t border-zinc-200/60 text-[15px] text-zinc-750 leading-relaxed bg-white">
                         {item.answer}
                       </div>
                     </details>
@@ -600,7 +600,7 @@ export default async function BlogDetailPage({ params }: PageProps) {
                   {/* Previous Article Card */}
                   {prevBlog ? (
                     <Link
-                      href={`/blogs/${prevBlog.slug}`}
+                      href={`/${prevBlog.slug}`}
                       className="group flex items-center gap-4 p-4 rounded-xl border border-zinc-200/60 bg-[#f4f7fc]/25 hover:bg-[#f4f7fc]/50 hover:border-brand-orange hover:shadow-sm transition-all duration-300 cursor-pointer text-left"
                     >
                       {prevBlog.image_url && (
@@ -629,7 +629,7 @@ export default async function BlogDetailPage({ params }: PageProps) {
                   {/* Next Article Card */}
                   {nextBlog ? (
                     <Link
-                      href={`/blogs/${nextBlog.slug}`}
+                      href={`/${nextBlog.slug}`}
                       className="group flex items-center justify-between gap-4 p-4 rounded-xl border border-zinc-200/60 bg-[#f4f7fc]/25 hover:bg-[#f4f7fc]/50 hover:border-brand-orange hover:shadow-sm transition-all duration-300 cursor-pointer text-right"
                     >
                       <div className="flex-1 min-w-0">
@@ -677,17 +677,17 @@ export default async function BlogDetailPage({ params }: PageProps) {
               {/* Branded Web Creation Nepal CTA Banner */}
               <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#1a5276] via-[#1f618d] to-[#2e86c1] text-white p-6 shadow-md border border-blue-900/10 text-center flex flex-col items-center justify-center min-h-[140px] group">
                 <div className="absolute inset-0 opacity-[0.07] pointer-events-none bg-[radial-gradient(circle_at_1px_1px,white_1px,transparent_0)] bg-[size:16px_16px]" />
-                <p className="text-[10px] font-black uppercase tracking-widest text-blue-200 mb-1">
+                <p className="text-xs font-black uppercase tracking-widest text-blue-200 mb-1.5">
                   Web Creation Nepal
                 </p>
-                <h4 className="text-base font-extrabold mb-3 leading-tight max-w-[240px]">
+                <h4 className="text-lg font-extrabold mb-3 leading-tight max-w-[240px]">
                   Professional SEO & Web Development Services
                 </h4>
                 <Link
                   href="https://webcreation.com.np"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center px-4 py-2 bg-white hover:bg-zinc-55 text-blue-900 hover:text-blue-950 text-xs font-extrabold uppercase rounded-lg shadow transition-all duration-300 transform group-hover:scale-[1.02]"
+                  className="inline-flex items-center justify-center px-4 py-2 bg-white hover:bg-zinc-55 text-blue-900 hover:text-blue-950 text-sm font-extrabold uppercase rounded-lg shadow transition-all duration-300 transform group-hover:scale-[1.02]"
                 >
                   Get Started
                 </Link>

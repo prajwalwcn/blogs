@@ -10,7 +10,10 @@ import {
   Pencil,
   Trash2,
   X,
-  ImageIcon
+  ImageIcon,
+  GripVertical,
+  CheckCircle2,
+  Loader2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -37,6 +40,7 @@ interface Blog {
   image_url: string | null;
   image_alt: string | null;
   image_caption: string | null;
+  priority?: number | null;
 }
 
 interface UserProfile {
@@ -53,6 +57,12 @@ export default function AdminBlogsPage() {
   const [blogs, setBlogs] = React.useState<Blog[]>([]);
   const [loading, setLoading] = React.useState(true);
   const [searchQuery, setSearchQuery] = React.useState("");
+  const [isSavingOrder, setIsSavingOrder] = React.useState(false);
+  const [orderChanged, setOrderChanged] = React.useState(false);
+
+  // Drag state
+  const [draggedId, setDraggedId] = React.useState<number | null>(null);
+  const [dragOverId, setDragOverId] = React.useState<number | null>(null);
 
   // Fetch initial data
   const fetchBlogs = async () => {
@@ -89,6 +99,62 @@ export default function AdminBlogsPage() {
     loadInitialData();
   }, [router]);
 
+  // ── Drag & Drop Handlers ─────────────────────────────────
+  const handleDragStart = (e: React.DragEvent, id: number) => {
+    setDraggedId(id);
+    e.dataTransfer.effectAllowed = "move";
+  };
+
+  const handleDragOver = (e: React.DragEvent, id: number) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "move";
+    if (id !== dragOverId) setDragOverId(id);
+  };
+
+  const handleDrop = (e: React.DragEvent, targetId: number) => {
+    e.preventDefault();
+    if (draggedId === null || draggedId === targetId) {
+      setDraggedId(null);
+      setDragOverId(null);
+      return;
+    }
+
+    setBlogs((prev) => {
+      const updated = [...prev];
+      const fromIndex = updated.findIndex((b) => b.id === draggedId);
+      const toIndex = updated.findIndex((b) => b.id === targetId);
+      if (fromIndex === -1 || toIndex === -1) return prev;
+      const [moved] = updated.splice(fromIndex, 1);
+      updated.splice(toIndex, 0, moved);
+      return updated;
+    });
+    setOrderChanged(true);
+    setDraggedId(null);
+    setDragOverId(null);
+  };
+
+  const handleDragEnd = () => {
+    setDraggedId(null);
+    setDragOverId(null);
+  };
+
+  // ── Save Priority Order ───────────────────────────────────
+  const handleSaveOrder = async () => {
+    setIsSavingOrder(true);
+    try {
+      await apiRequest("/api/blogs/reorder", {
+        method: "POST",
+        body: JSON.stringify({ ordered_ids: blogs.map((b) => b.id) }),
+      });
+      toast.success("Blog priority order saved!");
+      setOrderChanged(false);
+    } catch (err: any) {
+      toast.error(err.message || "Failed to save order.");
+    } finally {
+      setIsSavingOrder(false);
+    }
+  };
+
   // Delete Handler
   const handleDeleteBlog = async (blog: Blog) => {
     if (!confirm(`Are you sure you want to delete the blog "${blog.name}"? This action cannot be undone.`)) {
@@ -106,7 +172,7 @@ export default function AdminBlogsPage() {
     }
   };
 
-  // Client Search filtering
+  // Client Search filtering (on original list)
   const filteredBlogs = blogs.filter(
     (blog) =>
       blog.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -135,14 +201,32 @@ export default function AdminBlogsPage() {
       headerTitle="Manage Blogs"
       user={user}
       headerRight={
-        <Button
-          size="sm"
-          onClick={() => router.push("/admin/blogs/create")}
-          className="bg-brand-orange hover:bg-brand-orange-hover text-white text-xs font-bold flex items-center gap-1.5 shadow-sm cursor-pointer"
-        >
-          <Plus className="h-4 w-4" />
-          <span>Add Blog</span>
-        </Button>
+        <div className="flex items-center gap-2">
+          {/* Save Order Button — appears only when order has changed */}
+          {orderChanged && (
+            <Button
+              size="sm"
+              onClick={handleSaveOrder}
+              disabled={isSavingOrder}
+              className="bg-brand-green hover:bg-brand-green/90 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm cursor-pointer transition-all animate-in fade-in duration-200"
+            >
+              {isSavingOrder ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <CheckCircle2 className="h-4 w-4" />
+              )}
+              <span>{isSavingOrder ? "Saving..." : "Save Priority Order"}</span>
+            </Button>
+          )}
+          <Button
+            size="sm"
+            onClick={() => router.push("/admin/blogs/create")}
+            className="bg-brand-orange hover:bg-brand-orange-hover text-white text-xs font-bold flex items-center gap-1.5 shadow-sm cursor-pointer"
+          >
+            <Plus className="h-4 w-4" />
+            <span>Add Blog</span>
+          </Button>
+        </div>
       }
     >
       {/* Page Body */}
@@ -169,8 +253,16 @@ export default function AdminBlogsPage() {
             )}
           </div>
 
-          <div className="text-xs font-bold text-zinc-400 dark:text-zinc-550 uppercase tracking-widest shrink-0">
-            Found {filteredBlogs.length} {filteredBlogs.length === 1 ? "Blog" : "Blogs"}
+          <div className="flex items-center gap-3">
+            {!searchQuery && (
+              <span className="text-[10px] font-bold text-zinc-400 dark:text-zinc-550 uppercase tracking-widest flex items-center gap-1.5">
+                <GripVertical className="h-3.5 w-3.5" />
+                Drag rows to reorder priority
+              </span>
+            )}
+            <div className="text-xs font-bold text-zinc-400 dark:text-zinc-550 uppercase tracking-widest shrink-0">
+              Found {filteredBlogs.length} {filteredBlogs.length === 1 ? "Blog" : "Blogs"}
+            </div>
           </div>
         </div>
 
@@ -201,7 +293,9 @@ export default function AdminBlogsPage() {
             <Table>
               <TableHeader className="bg-zinc-50 dark:bg-zinc-900/40">
                 <TableRow>
-                  <TableHead className="w-16 pl-6">Cover</TableHead>
+                  <TableHead className="w-8 pl-4"></TableHead>
+                  <TableHead className="w-12 pl-3">Priority</TableHead>
+                  <TableHead className="w-16 pl-3">Cover</TableHead>
                   <TableHead className="w-12">ID</TableHead>
                   <TableHead className="w-64">Name / Slug</TableHead>
                   <TableHead>Description</TableHead>
@@ -209,10 +303,37 @@ export default function AdminBlogsPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredBlogs.map((blog) => (
-                  <TableRow key={blog.id} className="hover:bg-zinc-50/50 dark:hover:bg-zinc-900/25 transition-all">
+                {filteredBlogs.map((blog, idx) => (
+                  <TableRow
+                    key={blog.id}
+                    draggable={!searchQuery}
+                    onDragStart={(e) => handleDragStart(e, blog.id)}
+                    onDragOver={(e) => handleDragOver(e, blog.id)}
+                    onDrop={(e) => handleDrop(e, blog.id)}
+                    onDragEnd={handleDragEnd}
+                    className={`
+                      transition-all duration-150
+                      ${draggedId === blog.id ? "opacity-40 scale-[0.99] border-brand-orange/40" : ""}
+                      ${dragOverId === blog.id && draggedId !== blog.id ? "bg-brand-orange/5 border-l-2 border-l-brand-orange" : "hover:bg-zinc-50/50 dark:hover:bg-zinc-900/25"}
+                      ${!searchQuery ? "cursor-grab active:cursor-grabbing" : ""}
+                    `}
+                  >
+                    {/* Drag Handle Cell */}
+                    <TableCell className="pl-4 py-3">
+                      {!searchQuery && (
+                        <GripVertical className="h-4 w-4 text-zinc-300 hover:text-zinc-500 transition-colors" />
+                      )}
+                    </TableCell>
+
+                    {/* Priority Number Cell */}
+                    <TableCell className="pl-3 py-3">
+                      <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-zinc-100 dark:bg-zinc-800 text-[10px] font-black text-zinc-500 dark:text-zinc-400">
+                        {idx + 1}
+                      </span>
+                    </TableCell>
+
                     {/* Cover image preview cell */}
-                    <TableCell className="pl-6 py-3">
+                    <TableCell className="pl-3 py-3">
                       <div className="h-10 w-16 rounded-lg bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 overflow-hidden flex items-center justify-center">
                         {blog.image_url ? (
                           /* eslint-disable-next-line @next/next/no-img-element */
@@ -290,6 +411,25 @@ export default function AdminBlogsPage() {
                 ))}
               </TableBody>
             </Table>
+
+            {/* Order changed banner */}
+            {orderChanged && (
+              <div className="border-t border-brand-orange/20 bg-brand-orange/5 px-6 py-3 flex items-center justify-between animate-in fade-in duration-200">
+                <p className="text-xs font-bold text-brand-orange flex items-center gap-2">
+                  <GripVertical className="h-3.5 w-3.5" />
+                  Order changed — click "Save Priority Order" to persist.
+                </p>
+                <Button
+                  size="sm"
+                  onClick={handleSaveOrder}
+                  disabled={isSavingOrder}
+                  className="bg-brand-orange hover:bg-brand-orange-hover text-white text-xs font-bold cursor-pointer h-7 px-3"
+                >
+                  {isSavingOrder ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <CheckCircle2 className="h-3.5 w-3.5 mr-1" />}
+                  Save Order
+                </Button>
+              </div>
+            )}
           </div>
         )}
       </div>

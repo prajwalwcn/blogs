@@ -43,7 +43,7 @@ export default function BlogCard({
     ? meta_keywords.split(",").map((k) => k.trim()).filter(Boolean)[0]
     : null;
 
-  const href = `/blogs/${slug}`;
+  const href = `/${slug}`;
 
   // Simple date formatter to match "June 30, 2026" formatting
   const formattedDate = created_at

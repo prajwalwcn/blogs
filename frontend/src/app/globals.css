@@ -58,8 +58,9 @@
   --color-card-foreground: var(--card-foreground);
   --color-border: var(--border);
   --color-ring: var(--ring);
-  --font-sans: var(--font-host-grotesk), system-ui, sans-serif;
-  --font-roboto-condensed: var(--font-roboto-condensed), sans-serif;
+  --font-sans: var(--font-roboto-condensed), sans-serif;
+  --font-roboto: var(--font-roboto-condensed), sans-serif;
+  --font-alumni: var(--font-alumni-sans), sans-serif;
   
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
@@ -137,6 +138,126 @@
   font-family: var(--font-roboto-condensed), sans-serif !important;
 }
 
-body, button, input, select, textarea, h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-host-grotesk), system-ui, -apple-system, sans-serif !important;
+body {
+  box-sizing: border-box;
+  display: block;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  direction: ltr;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
+
+/* Scoped layout body properties for the public website pages only */
+.public-layout-container {
+  margin: 10px 0 !important;
+  font-family: var(--font-roboto-condensed), sans-serif !important;
+  font-size: 18px !important;
+  font-weight: 400 !important;
+  line-height: 28px !important;
+  text-align: left !important;
+  color: rgb(75, 75, 75) !important;
+}
+
+.public-layout-container button,
+.public-layout-container input,
+.public-layout-container select,
+.public-layout-container textarea {
+  font-family: var(--font-roboto-condensed), sans-serif !important;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+button.text-xs {
+  font-size: 12px !important;
+}
+
+
+
+/* General page layout headings use Host Grotesk - scoped only to public frontend layout */
+.public-layout-container h2,
+.public-layout-container h3,
+.public-layout-container h4,
+.public-layout-container h5,
+.public-layout-container h6 {
+  font-family: var(--font-host-grotesk), system-ui, -apple-system, sans-serif !important;
+  font-weight: 800 !important;
+  color: rgb(38, 38, 38) !important;
+  letter-spacing: normal !important;
+}
+
+/* Only the main article title and headings inside the blog body use Alumni Sans - scoped only to public frontend layout */
+.public-layout-container h1,
+.public-layout-container .blog-content-body h2,
+.public-layout-container .blog-content-body h3,
+.public-layout-container .blog-content-body h4 {
+  font-family: var(--font-alumni-sans), sans-serif !important;
+  font-weight: 700 !important;
+  color: rgb(38, 38, 38) !important;
+  letter-spacing: 0.03em !important;
+}
+
+/* Ensure headings inside white-text parent containers stay white - scoped only to public frontend layout */
+.public-layout-container .text-white h1,
+.public-layout-container .text-white h2,
+.public-layout-container .text-white h3,
+.public-layout-container .text-white h4,
+.public-layout-container .text-white h5,
+.public-layout-container .text-white h6 {
+  color: rgb(255, 255, 255) !important;
+}
+
+.public-layout-container h1 {
+  font-size: 42px !important;
+  line-height: 52px !important;
+}
+
+/* Custom internal spacing for blog content - scoped only to public frontend layout */
+.public-layout-container .blog-content-body p {
+  margin-top: 0 !important;
+  margin-bottom: 20px !important;
+  line-height: 28px !important;
+}
+.public-layout-container .blog-content-body h2,
+.public-layout-container .blog-content-body h3,
+.public-layout-container .blog-content-body h4 {
+  margin-top: 28px !important;
+  margin-bottom: 16px !important;
+}
+.public-layout-container .blog-content-body ul,
+.public-layout-container .blog-content-body ol {
+  margin-bottom: 12px !important;
+  padding-left: 20px !important;
+}
+.public-layout-container .blog-content-body li {
+  margin-bottom: 6px !important;
+}
+
+/* ==========================================================
+   Rich Text Editor — override ALL global heading/body rules.
+   These MUST be at the end of the file to win the cascade.
+   ========================================================== */
+[contenteditable], .rich-text-editor-content {
+  font-size: 16px !important;
+  line-height: 1.6 !important;
+  font-family: var(--font-roboto-condensed), sans-serif !important;
+  font-weight: 400 !important;
+  letter-spacing: normal !important;
+}
+
+[contenteditable] h1, [contenteditable] h2, [contenteditable] h3, [contenteditable] h4, [contenteditable] h5, [contenteditable] h6,
+.rich-text-editor-content h1, .rich-text-editor-content h2, .rich-text-editor-content h3, .rich-text-editor-content h4, .rich-text-editor-content h5, .rich-text-editor-content h6 {
+  font-family: var(--font-roboto-condensed), sans-serif !important;
+  font-weight: 700 !important;
+  color: rgb(38, 38, 38) !important;
+  letter-spacing: normal !important;
+  margin-top: 12px !important;
+  margin-bottom: 6px !important;
+}
+
+[contenteditable] h1, .rich-text-editor-content h1 { font-size: 22px !important; line-height: 1.3 !important; }
+[contenteditable] h2, .rich-text-editor-content h2 { font-size: 19px !important; line-height: 1.3 !important; }
+[contenteditable] h3, .rich-text-editor-content h3 { font-size: 17px !important; line-height: 1.3 !important; }
+[contenteditable] h4, .rich-text-editor-content h4 { font-size: 15px !important; line-height: 1.3 !important; }

@@ -28,7 +28,7 @@ export async function GET() {
 
     const feedItems = blogs
       .map((blog) => {
-        const url = `${frontendUrl}/blogs/${blog.slug}`;
+        const url = `${frontendUrl}/${blog.slug}`;
         const date = blog.created_at ? new Date(blog.created_at).toUTCString() : new Date().toUTCString();
         return `
     <item>
