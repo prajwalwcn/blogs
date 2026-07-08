@@ -151,8 +151,8 @@ export default function BlogCard({
             className={cn(
               "font-semibold text-[#252525] leading-[30px] transition-colors group-hover:text-blue-600",
               size === "large"
-                ? "text-[24px] line-clamp-2"
-                : "text-[22px] line-clamp-2"
+                ? "text-[28px] line-clamp-2"
+                : "text-[26px] line-clamp-2"
             )}
           >
             {name}

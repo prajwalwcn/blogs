@@ -23,7 +23,7 @@ export default function CategoryList({ categories }: CategoryListProps) {
 
   return (
     <div className="bg-[#f4f7fc] border border-zinc-200/70 rounded-2xl p-6 shadow-sm">
-      <h3 className="text-[22px] font-bold text-zinc-900 tracking-tight mb-5 pb-3.5 border-b border-zinc-200/70 flex items-center justify-between">
+      <h3 className="text-[24px] font-bold text-zinc-900 tracking-tight mb-5 pb-3.5 border-b border-zinc-200/70 flex items-center justify-between">
         <span>Categories</span>
         <span className="text-xs font-bold text-zinc-400 bg-zinc-200/60 px-2 py-0.5 rounded-full">
           {categories.length}
@@ -34,7 +34,7 @@ export default function CategoryList({ categories }: CategoryListProps) {
           <li key={cat.id}>
             <Link
               href="/"
-              className="flex items-center gap-3 group text-[16px] font-semibold text-zinc-700 hover:text-[#2665A3] transition-colors"
+              className="group flex items-center gap-3 text-[16px] leading-snug hover:text-[#2665A3] transition-colors font-normal text-zinc-700"
             >
               <ArrowRightCircle className="h-5 w-5 text-[#5e8347] shrink-0 group-hover:scale-105 transition-transform" />
               <span>{cat.name}</span>

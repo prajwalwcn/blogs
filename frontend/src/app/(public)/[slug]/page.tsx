@@ -548,11 +548,11 @@ export default async function BlogDetailPage({ params }: PageProps) {
                         </div>
                       )}
                       <div className="flex-1 min-w-0 flex flex-col justify-center">
-                        <h4 className="font-bold text-[15px] text-zinc-800 group-hover:text-blue-650 leading-snug line-clamp-2 transition-colors">
+                        <h4 className="font-bold text-[18px] text-zinc-800 group-hover:text-blue-650 leading-snug line-clamp-2 transition-colors">
                           {pop.name}
                         </h4>
                         {pop.excerpt && (
-                          <p className="text-xs text-zinc-550 line-clamp-2 mt-1 leading-normal">
+                          <p className="text-[15px] text-zinc-550 line-clamp-2 mt-1 leading-normal">
                             {pop.excerpt}
                           </p>
                         )}
@@ -614,10 +614,10 @@ export default async function BlogDetailPage({ params }: PageProps) {
                         </div>
                       )}
                       <div className="flex-1 min-w-0">
-                        <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">
+                        <span className="text-[12px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">
                           &larr; Previous Article
                         </span>
-                        <h4 className="font-bold text-sm sm:text-base text-zinc-800 group-hover:text-blue-650 transition-colors line-clamp-2 leading-snug">
+                        <h4 className="font-bold text-[16px] sm:text-base text-zinc-800 group-hover:text-blue-650 transition-colors line-clamp-2 leading-snug">
                           {prevBlog.name}
                         </h4>
                       </div>
@@ -633,10 +633,10 @@ export default async function BlogDetailPage({ params }: PageProps) {
                       className="group flex items-center justify-between gap-4 p-4 rounded-xl border border-zinc-200/60 bg-[#f4f7fc]/25 hover:bg-[#f4f7fc]/50 hover:border-brand-orange hover:shadow-sm transition-all duration-300 cursor-pointer text-right"
                     >
                       <div className="flex-1 min-w-0">
-                        <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">
+                        <span className="text-[12px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">
                           Next Article &rarr;
                         </span>
-                        <h4 className="font-bold text-sm sm:text-base text-zinc-800 group-hover:text-blue-650 transition-colors line-clamp-2 leading-snug">
+                        <h4 className="font-bold text-[16px] sm:text-base text-zinc-800 group-hover:text-blue-650 transition-colors line-clamp-2 leading-snug">
                           {nextBlog.name}
                         </h4>
                       </div>

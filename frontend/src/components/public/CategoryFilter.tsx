@@ -109,7 +109,7 @@ export default function CategoryFilter({ categories, currentCategory }: Category
               <Link
                 key={cat.id}
                 href={`/?category=${cat.slug}`}
-                className={`px-4 py-2 text-[12px] font-semibold rounded-full transition-all duration-200 shrink-0 ${
+                className={`px-4 py-2 text-[13px] font-semibold rounded-full transition-all duration-200 shrink-0 ${
                   isActive
                     ? "bg-[#507212] text-white shadow-sm"
                     : "bg-white text-zinc-700 border border-zinc-200 hover:bg-zinc-50 hover:text-zinc-900"

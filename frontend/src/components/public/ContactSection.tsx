@@ -112,7 +112,7 @@ export default function ContactSection() {
                 </h3>
               </div>
               
-              <p className="text-xs text-white/85 leading-relaxed max-w-sm">
+              <p className="text-[15px] text-white/85 leading-relaxed max-w-sm">
                 We are always here to assist you. Whether you have questions, feedback, or need support, our team is ready to help. Reach out to us via email, phone, or visit our office. We look forward to connecting with you!
               </p>
 
@@ -124,8 +124,8 @@ export default function ContactSection() {
                     <Mail className="h-5 w-5" />
                   </div>
                   <div className="min-w-0">
-                    <span className="block text-[10px] font-bold text-zinc-50 uppercase tracking-wider">Email Address :</span>
-                    <a href={`mailto:${dynamicEmail}`} className="text-xs sm:text-sm font-semibold text-white hover:underline transition-all block truncate">
+                    <span className="block text-[12px] font-bold text-zinc-50 uppercase tracking-wider">Email Address :</span>
+                    <a href={`mailto:${dynamicEmail}`} className="text-[15px] font-semibold text-white hover:underline transition-all block truncate">
                       {dynamicEmail}
                     </a>
                   </div>
@@ -137,8 +137,8 @@ export default function ContactSection() {
                     <Phone className="h-5 w-5" />
                   </div>
                   <div className="min-w-0">
-                    <span className="block text-[10px] font-bold text-zinc-50 uppercase tracking-wider">Phone Number :</span>
-                    <a href={`tel:${dynamicPhone}`} className="text-xs sm:text-sm font-semibold text-white hover:underline transition-all block truncate">
+                    <span className="block text-[12px] font-bold text-zinc-50 uppercase tracking-wider">Phone Number :</span>
+                    <a href={`tel:${dynamicPhone}`} className="text-[15px] font-semibold text-white hover:underline transition-all block truncate">
                       {dynamicPhone}
                     </a>
                   </div>
@@ -150,7 +150,7 @@ export default function ContactSection() {
                     <MapPin className="h-5 w-5" />
                   </div>
                   <div className="min-w-0">
-                    <span className="block text-[10px] font-bold text-zinc-50 uppercase tracking-wider">Location Address :</span>
+                    <span className="block text-[12px] font-bold text-zinc-50 uppercase tracking-wider">Location Address :</span>
                     <span className="text-xs sm:text-sm font-semibold text-white block truncate">
                       {dynamicAddress}
                     </span>
@@ -321,7 +321,7 @@ export default function ContactSection() {
                 <MapPin className="h-7 w-7 text-orange-500 animate-bounce" />
               </div>
               <h4 className="text-white font-bold text-lg mb-2">Interactive Map</h4>
-              <p className="text-zinc-300 text-xs max-w-xs mb-5 leading-relaxed">
+              <p className="text-zinc-300 text-[15px] max-w-xs mb-5 leading-relaxed">
                 Click below to load the interactive Google Map. This saves data and speeds up your page load.
               </p>
               <button

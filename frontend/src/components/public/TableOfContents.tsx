@@ -34,7 +34,7 @@ export default function TableOfContents({ sections }: TableOfContentsProps) {
     <>
       {/* ── Desktop Static Table of Content Widget ──────────────── */}
       <div className="hidden lg:block bg-[#f4f7fc] border border-zinc-200/70 rounded-2xl p-6 shadow-sm">
-        <h3 className="text-[22px] font-bold text-zinc-900 tracking-tight mb-5 pb-3.5 border-b border-zinc-200/70 flex items-center justify-between">
+        <h3 className="text-[24px] font-bold text-zinc-900 tracking-tight mb-5 pb-3.5 border-b border-zinc-200/70 flex items-center justify-between">
           <span>Table of Content</span>
           <span className="text-xs font-bold text-zinc-400 bg-zinc-200/60 px-2 py-0.5 rounded-full">
             {sections.length}
@@ -50,7 +50,7 @@ export default function TableOfContents({ sections }: TableOfContentsProps) {
                 </span>
                 <a
                   href={`#${secId}`}
-                  className="text-[16px] leading-snug hover:text-[#2665A3] transition-colors font-semibold text-zinc-700"
+                  className="text-[16px] leading-snug hover:text-[#2665A3] transition-colors font-normal text-zinc-700"
                 >
                   {sec.title}
                 </a>
