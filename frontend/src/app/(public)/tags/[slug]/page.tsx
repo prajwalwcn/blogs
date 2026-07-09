@@ -44,7 +44,7 @@ interface TagData {
 async function getTagData(slug: string): Promise<TagData | null> {
   try {
     const res = await fetch(`${API_URL}/api/tags/${slug}`, {
-      next: { revalidate: 60 },
+      next: { revalidate: 0 },
       headers: { Accept: "application/json" },
     });
     if (!res.ok) return null;

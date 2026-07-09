@@ -2,7 +2,16 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { KeyRound, Mail, AlertCircle, Eye, EyeOff, ShieldCheck, ArrowRight } from "lucide-react";
+import { 
+  Mail, 
+  Lock, 
+  AlertCircle, 
+  Eye, 
+  EyeOff, 
+  Shield, 
+  ArrowRight,
+  Sparkles
+} from "lucide-react";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -32,8 +41,9 @@ export default function LoginPage() {
 
       if (response.token) {
         setAuthToken(response.token);
-        toast.success("Authentication successful!", {
-          description: `Welcome back, ${response.user?.name || "Admin"}.`,
+        toast.success("Welcome back!", {
+          description: `You've been successfully authenticated.`,
+          icon: <Sparkles className="h-4 w-4" />,
         });
         router.push("/admin/dashboard");
       } else {
@@ -58,112 +68,126 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8 overflow-hidden font-sans">
-      {/* Dynamic Background Circles */}
-      <div className="absolute top-[-30%] left-[-15%] w-[60%] h-[60%] rounded-full bg-brand-green/10 dark:bg-brand-green/20 blur-[130px] pointer-events-none" />
-      <div className="absolute bottom-[-30%] right-[-15%] w-[60%] h-[60%] rounded-full bg-brand-orange/10 dark:bg-brand-orange/20 blur-[130px] pointer-events-none" />
+    <div className="relative min-h-screen flex items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8 overflow-hidden">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-brand-green/20 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-brand-orange/20 rounded-full blur-3xl animate-pulse delay-1000" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-brand-green/10 rounded-full blur-3xl" />
+      </div>
 
-      <div className="w-full max-w-lg relative z-10">
-        {/* Brand Header */}
-        <div className="flex flex-col items-center mb-8 text-center animate-in fade-in slide-in-from-top-4 duration-300">
-          <div className="flex items-center justify-center h-14 w-14 rounded-2xl bg-white dark:bg-zinc-900 border border-brand-green/20 dark:border-zinc-800 shadow-xl shadow-brand-green/5 text-brand-orange mb-4 relative group">
-            <div className="absolute inset-0 bg-gradient-to-tr from-brand-green/20 to-brand-orange/20 rounded-2xl blur opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            <ShieldCheck className="h-7 w-7 text-brand-orange relative z-10" />
+      <div className="w-full max-w-md relative z-10">
+        {/* Brand Section */}
+        <div className="flex flex-col items-center mb-8">
+          <div className="relative mb-6">
+
           </div>
           
-          <h1 className="text-3xl font-black tracking-tight text-zinc-900 dark:text-white flex items-center gap-2">
+          <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-white flex items-center gap-2">
             Blogs <span className="text-brand-orange">Admin</span>
-            <span className="text-brand-green">.</span>
           </h1>
-          <p className="text-sm font-semibold text-zinc-550 dark:text-zinc-400 mt-2">
-            System Console Gateway • Green & Orange Theme
+          <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-2">
+            System Console Gateway
           </p>
         </div>
 
-        {/* Auth Form Card */}
-        <Card className="border border-zinc-200/80 dark:border-zinc-800/85 shadow-2xl bg-white/95 dark:bg-zinc-900/60 backdrop-blur-xl transition-all duration-300">
-          <CardHeader className="space-y-1.5 pb-6 border-b border-zinc-150 dark:border-zinc-800/80">
-            <CardTitle className="text-2xl font-black tracking-tight text-zinc-900 dark:text-white">
-              Sign In
+        {/* Login Card */}
+        <Card className="relative border border-zinc-200/80 dark:border-zinc-800/85 shadow-2xl shadow-brand-green/5 dark:shadow-zinc-800/30 bg-white/95 dark:bg-zinc-900/60 backdrop-blur-xl">
+          <CardHeader className="space-y-1 pb-6 border-b border-zinc-150 dark:border-zinc-800/80">
+            <CardTitle className="text-xl font-semibold text-zinc-900 dark:text-white">
+              Account Login
             </CardTitle>
             <CardDescription className="text-sm text-zinc-500 dark:text-zinc-400">
-              Provide credentials verified in your Laravel administrative database.
+              Enter your credentials to continue
             </CardDescription>
           </CardHeader>
 
           <form onSubmit={handleLogin}>
-            <CardContent className="space-y-5 pt-6">
-              {/* Banner for error notifications */}
+            <CardContent className="space-y-4 pt-6">
+              {/* Error Alert */}
               {error && (
-                <div className="flex items-start gap-3 p-3.5 rounded-xl bg-red-50 dark:bg-red-950/20 border border-red-200/80 dark:border-red-900/30 text-red-650 dark:text-red-400 text-sm animate-in fade-in slide-in-from-top-2 duration-200">
-                  <AlertCircle className="h-5 w-5 shrink-0 mt-0.5" />
-                  <span className="font-semibold">{error}</span>
+                <div className="flex items-start gap-3 p-3 rounded-lg bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800/30 text-red-700 dark:text-red-300 text-sm">
+                  <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
+                  <span>{error}</span>
                 </div>
               )}
 
-
-              {/* Email Address Field */}
-              <div className="relative">
-                <div className="absolute left-3.5 top-[32px] h-10 flex items-center pointer-events-none">
-                  <Mail className="h-4.5 w-4.5 text-zinc-450" />
+              {/* Email Field */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                  Email Address
+                </label>
+                <div className="relative">
+                  <div className="absolute left-3 top-1/2 -translate-y-1/2">
+                    <Mail className="h-4 w-4 text-zinc-400" />
+                  </div>
+                  <Input
+                    type="email"
+                    placeholder="admin@example.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    className="pl-9 h-11 bg-white dark:bg-zinc-950/80 border-zinc-200 dark:border-zinc-700 focus:ring-2 focus:ring-brand-green/20 focus:border-brand-green transition-all"
+                    error={validationErrors.email?.[0]}
+                  />
                 </div>
-                <Input
-                  label="Email Address"
-                  type="email"
-                  placeholder="Enter email address"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  className="pl-10 dark:bg-zinc-950/80"
-                  error={validationErrors.email?.[0]}
-                />
               </div>
 
               {/* Password Field */}
-              <div className="relative">
-                <div className="absolute left-3.5 top-[32px] h-10 flex items-center pointer-events-none">
-                  <KeyRound className="h-4.5 w-4.5 text-zinc-450" />
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                    Password
+                  </label>
+                  <button
+                    type="button"
+                    className="text-xs text-brand-orange hover:text-brand-orange-hover font-medium transition-colors"
+                  >
+                    Forgot password?
+                  </button>
                 </div>
-                <Input
-                  label="Password"
-                  type={showPassword ? "text" : "password"}
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  className="pl-10 pr-10 dark:bg-zinc-950/80"
-                  error={validationErrors.password?.[0]}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3.5 top-[32px] h-10 flex items-center hover:text-brand-orange text-zinc-450 transition-colors"
-                >
-                  {showPassword ? (
-                    <EyeOff className="h-4.5 w-4.5" />
-                  ) : (
-                    <Eye className="h-4.5 w-4.5" />
-                  )}
-                </button>
+                <div className="relative">
+                  <div className="absolute left-3 top-1/2 -translate-y-1/2">
+                    <Lock className="h-4 w-4 text-zinc-400" />
+                  </div>
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    className="pl-9 pr-10 h-11 bg-white dark:bg-zinc-950/80 border-zinc-200 dark:border-zinc-700 focus:ring-2 focus:ring-brand-green/20 focus:border-brand-green transition-all"
+                    error={validationErrors.password?.[0]}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors"
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                  </button>
+                </div>
               </div>
             </CardContent>
 
-            <CardFooter className="flex flex-col gap-4 pb-8">
+            <CardFooter className="flex flex-col gap-4 pt-2 pb-6">
               <Button
                 type="submit"
-                variant="default"
-                className="w-full h-11 text-base font-bold bg-brand-orange hover:bg-brand-orange-hover text-white flex items-center justify-center gap-2 group transition-all"
+                className="w-full h-11 bg-brand-orange hover:bg-brand-orange-hover text-white font-medium shadow-lg shadow-brand-orange/25 hover:shadow-brand-orange/40 transition-all duration-300"
                 isLoading={isLoading}
               >
-                <span>Authenticate Console</span>
-                {!isLoading && (
-                  <ArrowRight className="h-4.5 w-4.5 group-hover:translate-x-1 transition-transform" />
-                )}
+                <span>Sign In</span>
+                {!isLoading && <ArrowRight className="h-4 w-4 ml-2" />}
               </Button>
               
-              <div className="w-full flex items-center justify-center gap-1.5 text-xs text-zinc-455 dark:text-zinc-500">
-                <span className="inline-block w-1.5 h-1.5 rounded-full bg-brand-orange animate-pulse" />
-                <span>Sanctum Authorization Secured</span>
+              <div className="flex items-center gap-2 text-xs text-zinc-400 dark:text-zinc-500">
+                <div className="h-px flex-1 bg-zinc-200 dark:bg-zinc-700" />
+                <span>Secure Sanctum Authentication</span>
+                <div className="h-px flex-1 bg-zinc-200 dark:bg-zinc-700" />
               </div>
             </CardFooter>
           </form>

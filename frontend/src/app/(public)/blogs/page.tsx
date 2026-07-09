@@ -20,7 +20,7 @@ interface Blog {
 async function getBlogs(): Promise<Blog[]> {
   try {
     const res = await fetch(`${API_URL}/api/blogs`, {
-      next: { revalidate: 60 },
+      next: { revalidate: 0 },
       headers: { Accept: "application/json" },
     });
     if (!res.ok) return [];

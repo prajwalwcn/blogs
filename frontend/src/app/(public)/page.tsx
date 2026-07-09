@@ -38,7 +38,7 @@ interface Blog {
 async function getBlogs(): Promise<Blog[]> {
   try {
     const res = await fetch(`${API_URL}/api/blogs`, {
-      next: { revalidate: 60 },
+      next: { revalidate: 0 },
       headers: { Accept: "application/json" },
     });
     if (!res.ok) return [];
@@ -52,7 +52,7 @@ async function getBlogs(): Promise<Blog[]> {
 async function getCategories(): Promise<Category[]> {
   try {
     const res = await fetch(`${API_URL}/api/categories`, {
-      next: { revalidate: 60 },
+      next: { revalidate: 0 },
       headers: { Accept: "application/json" },
     });
     if (!res.ok) return [];
@@ -66,7 +66,7 @@ async function getCategories(): Promise<Category[]> {
 async function getSettings() {
   try {
     const res = await fetch(`${API_URL}/api/settings`, {
-      next: { revalidate: 60 },
+      next: { revalidate: 0 },
       headers: { Accept: "application/json" },
     });
     if (!res.ok) return null;

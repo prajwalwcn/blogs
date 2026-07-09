@@ -26,7 +26,7 @@ const API_URL = rawApiUrl.replace(/\/api\/?$/, "").replace(/\/$/, "");
 
 async function getSettings() {
   try {
-    const res = await fetch(`${API_URL}/api/settings`, { next: { revalidate: 60 } });
+    const res = await fetch(`${API_URL}/api/settings`, { next: { revalidate: 0 } });
     if (!res.ok) return null;
     const json = await res.json();
     return json.data;

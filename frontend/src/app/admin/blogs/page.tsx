@@ -298,7 +298,7 @@ export default function AdminBlogsPage() {
                   <TableHead className="w-16 pl-3">Cover</TableHead>
                   <TableHead className="w-12">ID</TableHead>
                   <TableHead className="w-64">Name / Slug</TableHead>
-                  <TableHead>Description</TableHead>
+                  {/* <TableHead>Description</TableHead> */}
                   <TableHead className="w-44 text-right pr-6">Actions</TableHead>
                 </TableRow>
               </TableHeader>
@@ -368,10 +368,10 @@ export default function AdminBlogsPage() {
                       </div>
                     </TableCell>
 
-                    {/* Description Cell */}
-                    <TableCell className="max-w-md truncate text-xs text-zinc-550 dark:text-zinc-400 font-medium">
-                      {blog.excerpt || (typeof blog.description === "string" ? blog.description : "—")}
-                    </TableCell>
+                      {/* Description Cell */}
+                      {/* <TableCell className="max-w-md truncate text-xs text-zinc-550 dark:text-zinc-400 font-medium">
+                        {blog.excerpt || (typeof blog.description === "string" ? blog.description : "—")}
+                      </TableCell> */}
 
                     {/* Actions Cell */}
                     <TableCell className="text-right pr-6 py-3">

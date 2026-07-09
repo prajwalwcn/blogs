@@ -14,6 +14,7 @@ use App\Http\Requests\UpdateBlogRequest;
 use App\Http\Resources\PostResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class BlogController extends Controller
 {
@@ -291,6 +292,8 @@ class BlogController extends Controller
         foreach ($request->ordered_ids as $priority => $id) {
             Blog::where('id', $id)->update(['priority' => $priority + 1]);
         }
+
+        Cache::forget('blogs:all');
 
         return response()->json(['message' => 'Blogs reordered successfully']);
     }

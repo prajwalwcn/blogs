@@ -25,11 +25,13 @@ class Setting extends Model
         'address',
         'office_hours',
         'google_map_iframe',
+        'enable_voice_reader',
     ];
 
     protected $casts = [
         'emails' => 'array',
         'phones' => 'array',
         'social_links' => 'array',
+        'enable_voice_reader' => 'boolean',
     ];
 }

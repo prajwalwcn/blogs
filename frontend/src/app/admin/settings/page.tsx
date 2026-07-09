@@ -85,6 +85,7 @@ export default function AdminSettingsPage() {
   const [address, setAddress]             = React.useState("");
   const [officeHours, setOfficeHours]     = React.useState("");
   const [googleMapIframe, setGoogleMapIframe] = React.useState("");
+  const [enableVoiceReader, setEnableVoiceReader] = React.useState(false);
 
   const [uploadingLogo, setUploadingLogo] = React.useState(false);
   const [uploadingFavicon, setUploadingFavicon] = React.useState(false);
@@ -164,6 +165,7 @@ export default function AdminSettingsPage() {
         setAddress(s.address ?? "");
         setOfficeHours(s.office_hours ?? "");
         setGoogleMapIframe(s.google_map_iframe ?? "");
+        setEnableVoiceReader(s.enable_voice_reader ?? false);
       } catch (err: any) {
         toast.error("Failed to load website settings.");
       } finally {
@@ -247,6 +249,7 @@ export default function AdminSettingsPage() {
           address: address,
           office_hours: officeHours,
           google_map_iframe: googleMapIframe,
+          enable_voice_reader: enableVoiceReader,
         }),
       });
       toast.success("Website settings saved!");
@@ -672,6 +675,27 @@ export default function AdminSettingsPage() {
                     </div>
                   ))}
                 </div>
+              </div>
+
+              {/* Voice Reader Settings */}
+              <div className="bg-white/60 dark:bg-zinc-900/40 border border-zinc-200/85 dark:border-zinc-800/80 p-6 rounded-2xl space-y-4 shadow-sm backdrop-blur-sm">
+                <h4 className="text-xs font-black uppercase tracking-widest text-brand-orange flex items-center gap-2 border-b border-zinc-100 dark:border-zinc-855 pb-3">
+                  <Settings2 className="h-4 w-4" /> Voice Reader Settings
+                </h4>
+                <label className="flex items-center gap-2.5 cursor-pointer select-none pt-2">
+                  <input
+                    type="checkbox"
+                    checked={enableVoiceReader}
+                    onChange={(e) => setEnableVoiceReader(e.target.checked)}
+                    className="rounded border-zinc-300 text-brand-orange focus:ring-brand-orange h-4.5 w-4.5"
+                  />
+                  <div className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-350">
+                    Enable Voice Reader on Blog Posts
+                  </div>
+                </label>
+                <p className="text-xs text-zinc-400 dark:text-zinc-500 leading-relaxed mt-1">
+                  When enabled, a premium audio player will appear below the cover image of the blog detail page, allowing users to listen to the title and content.
+                </p>
               </div>
 
               {/* Save Button */}

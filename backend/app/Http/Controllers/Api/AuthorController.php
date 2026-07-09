@@ -63,6 +63,7 @@ class AuthorController extends Controller
         // Retrieve published blogs (channels) written by this author
         $blogs = \App\Domains\Blog\Models\Blog::where('author_id', $author->id)
             ->with(['author', 'categories', 'tags'])
+            ->orderBy('priority', 'asc')
             ->orderBy('created_at', 'desc')
             ->get();
 

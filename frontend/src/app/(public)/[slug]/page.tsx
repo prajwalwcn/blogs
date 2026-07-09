@@ -15,6 +15,7 @@ import CommentSection from "@/components/public/CommentSection";
 import ShareButtons from "@/components/public/ShareButtons";
 import TableOfContents from "@/components/public/TableOfContents";
 import CategoryList from "@/components/public/CategoryList";
+import VoiceReader from "@/components/public/VoiceReader";
 
 const rawApiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 const API_URL = rawApiUrl.replace(/\/api\/?$/, "").replace(/\/$/, "");
@@ -74,7 +75,7 @@ interface PopularBlog {
 async function getBlogData(slug: string): Promise<BlogData | null> {
   try {
     const res = await fetch(`${API_URL}/api/blogs/${slug}?limit=100`, {
-      next: { revalidate: 60 },
+      next: { revalidate: 0 },
       headers: { Accept: "application/json" },
     });
     if (!res.ok) return null;
@@ -87,7 +88,7 @@ async function getBlogData(slug: string): Promise<BlogData | null> {
 async function getCategories(): Promise<Category[]> {
   try {
     const res = await fetch(`${API_URL}/api/categories`, {
-      next: { revalidate: 60 },
+      next: { revalidate: 0 },
       headers: { Accept: "application/json" },
     });
     if (!res.ok) return [];
@@ -101,7 +102,7 @@ async function getCategories(): Promise<Category[]> {
 async function getPopularBlogs(currentSlug: string): Promise<PopularBlog[]> {
   try {
     const res = await fetch(`${API_URL}/api/blogs`, {
-      next: { revalidate: 60 },
+      next: { revalidate: 0 },
       headers: { Accept: "application/json" },
     });
     if (!res.ok) return [];
@@ -118,7 +119,7 @@ async function getPopularBlogs(currentSlug: string): Promise<PopularBlog[]> {
 async function getAllBlogs(): Promise<any[]> {
   try {
     const res = await fetch(`${API_URL}/api/blogs`, {
-      next: { revalidate: 60 },
+      next: { revalidate: 0 },
       headers: { Accept: "application/json" },
     });
     if (!res.ok) return [];
@@ -132,7 +133,7 @@ async function getAllBlogs(): Promise<any[]> {
 async function getSettings(): Promise<any> {
   try {
     const res = await fetch(`${API_URL}/api/settings`, {
-      next: { revalidate: 60 },
+      next: { revalidate: 0 },
       headers: { Accept: "application/json" },
     });
     if (!res.ok) return null;
@@ -273,6 +274,20 @@ export default async function BlogDetailPage({ params }: PageProps) {
       }
     }
   }
+
+  // Strip HTML tags for Text-to-Speech reader
+  const stripHtml = (html: string) => {
+    if (!html) return "";
+    return html.replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ");
+  };
+
+  const textToRead = [
+    blog.name,
+    blog.excerpt || "",
+    ...sections.map((s) => `${s.title}. ${stripHtml(s.content)}`),
+  ]
+    .filter(Boolean)
+    .join(". ");
 
   // Dynamic Schema Generation
   const headersList = await headers();
@@ -482,6 +497,11 @@ export default async function BlogDetailPage({ params }: PageProps) {
                   className="object-cover"
                 />
               </div>
+            )}
+
+            {/* Voice Reader (if enabled in settings) */}
+            {settings?.enable_voice_reader && (
+              <VoiceReader text={textToRead} />
             )}
 
             {/* Excerpt */}

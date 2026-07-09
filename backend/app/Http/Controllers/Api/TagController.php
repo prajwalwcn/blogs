@@ -74,6 +74,7 @@ class TagController extends Controller
             $query->where('tags.id', $tag->id);
         })
         ->with(['author', 'categories', 'tags'])
+        ->orderBy('priority', 'asc')
         ->orderBy('created_at', 'desc')
         ->get();
 

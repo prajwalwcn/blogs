@@ -48,7 +48,7 @@ interface AuthorData {
 async function getAuthorData(slug: string): Promise<AuthorData | null> {
   try {
     const res = await fetch(`${API_URL}/api/authors/${slug}`, {
-      next: { revalidate: 60 },
+      next: { revalidate: 0 },
       headers: { Accept: "application/json" },
     });
     if (!res.ok) return null;
