@@ -52,25 +52,8 @@ class SeoController extends Controller
 
         $robots = "# Dynamic Robots.txt served from Laravel Backend" . PHP_EOL . PHP_EOL;
 
-        // 1. Block AI crawlers from scraping content for LLM training
-        $robots .= "# Block AI crawlers for model training" . PHP_EOL;
-        $robots .= "User-agent: GPTBot" . PHP_EOL;
-        $robots .= "Disallow: /" . PHP_EOL . PHP_EOL;
-
-        $robots .= "User-agent: Google-Extended" . PHP_EOL;
-        $robots .= "Disallow: /" . PHP_EOL . PHP_EOL;
-
-        $robots .= "User-agent: Bytespider" . PHP_EOL;
-        $robots .= "Disallow: /" . PHP_EOL . PHP_EOL;
-
-        $robots .= "User-agent: ClaudeBot" . PHP_EOL;
-        $robots .= "Disallow: /" . PHP_EOL . PHP_EOL;
-
-        $robots .= "User-agent: CCBot" . PHP_EOL;
-        $robots .= "Disallow: /" . PHP_EOL . PHP_EOL;
-
-        // 2. Allow real search bots
-        $robots .= "# Allow all search engines" . PHP_EOL;
+        // 1. Allow all search engines and AI crawlers for AEO/GEO optimization
+        $robots .= "# Allow all crawlers, including AI search & LLM bots (AEO/GEO optimization)" . PHP_EOL;
         $robots .= "User-agent: *" . PHP_EOL;
         $robots .= "Allow: /" . PHP_EOL . PHP_EOL;
 

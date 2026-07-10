@@ -36,12 +36,6 @@ export async function apiRequest<T = any>(
   // If the endpoint is an API path, prefix it with the backend base URL
   if (url.startsWith("/api/")) {
     url = `${API_BASE}${url}`;
-  } else {
-    // Non-API endpoints (e.g. admin routes): apply base path prefix
-    const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "/blog";
-    if (url.startsWith("/") && basePath && basePath !== "/" && !url.startsWith(basePath)) {
-      url = `${basePath}${url}`;
-    }
   }
   if (params) {
     const searchParams = new URLSearchParams();

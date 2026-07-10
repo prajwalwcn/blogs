@@ -27,8 +27,7 @@ interface WebsiteSettings {
 }
 
 const resolveLogoUrl = (url?: string | null) => {
-  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
-  if (!url) return `${basePath}/logo.png`;
+  if (!url) return "/logo.png";
   if (url.startsWith("http://") || url.startsWith("https://")) {
     return url;
   }

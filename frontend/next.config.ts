@@ -1,9 +1,6 @@
 import type { NextConfig } from "next";
 
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "/blog";
-
 const nextConfig: NextConfig = {
-  basePath: basePath === "/" ? undefined : basePath,
   output: "standalone",
   trailingSlash: true,
   images: {

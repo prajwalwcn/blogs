@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { FileText } from "lucide-react";
+import { headers } from "next/headers";
 import BlogCard from "@/components/public/BlogCard";
 import CategoryFilter from "@/components/public/CategoryFilter";
 
@@ -102,8 +103,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 // ── JSON-LD ────────────────────────────────────────────────────────────────
-function JsonLd({ blogs, settings }: { blogs: Blog[]; settings: any }) {
-  const baseUrl = "https://demo.webcreationcanada.com/blog";
+function JsonLd({ blogs, settings, baseUrl }: { blogs: Blog[]; settings: any; baseUrl: string }) {
   const logoUrl = settings?.logo_url || `${baseUrl}/logo.png`;
 
   const sameAs: string[] = [];
@@ -203,6 +203,12 @@ export default async function HomePage({ searchParams }: PageProps) {
   const currentPage = Number(resolvedSearchParams.page) || 1;
   const currentCategory = resolvedSearchParams.category || "";
 
+  // Dynamic Base URL Resolution
+  const headersList = await headers();
+  const host = headersList.get("host") || (process.env.NEXT_PUBLIC_APP_URL ? process.env.NEXT_PUBLIC_APP_URL.replace(/^https?:\/\//, "") : "localhost:3000");
+  const protocol = host.includes("localhost") ? "http" : "https";
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || `${protocol}://${host}`;
+
   // Filter blogs based on category if selected
   const filteredBlogs = currentCategory
     ? allBlogs.filter((blog) =>
@@ -222,7 +228,7 @@ export default async function HomePage({ searchParams }: PageProps) {
 
   return (
     <>
-      <JsonLd blogs={allBlogs} settings={settings} />
+      <JsonLd blogs={allBlogs} settings={settings} baseUrl={baseUrl} />
 
       {/* ── Hero ───────────────────────────────────────────────── */}
       <section

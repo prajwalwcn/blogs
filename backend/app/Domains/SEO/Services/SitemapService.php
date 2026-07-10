@@ -6,8 +6,7 @@ namespace App\Domains\SEO\Services;
 
 use App\Domains\Author\Repositories\AuthorRepository;
 use App\Domains\Blog\Repositories\BlogRepository;
-use App\Domains\Category\Repositories\CategoryRepository;
-use App\Domains\Post\Repositories\PostRepository;
+use App\Domains\Tag\Repositories\TagRepository;
 use Illuminate\Support\Collection;
 
 class SitemapService
@@ -15,9 +14,8 @@ class SitemapService
     protected string $frontendUrl;
 
     public function __construct(
-        protected PostRepository $postRepository,
         protected AuthorRepository $authorRepository,
-        protected CategoryRepository $categoryRepository,
+        protected TagRepository $tagRepository,
         protected BlogRepository $blogRepository
     ) {
         $this->frontendUrl = rtrim(config('app.frontend_url', env('FRONTEND_URL', 'http://localhost:3000')), '/');
@@ -40,31 +38,18 @@ class SitemapService
             'priority' => '1.0',
         ];
 
-        // 2. Blogs List & Individual Blogs
+        // 2. Blog Channels
         $blogs = $this->blogRepository->all();
         foreach ($blogs as $blog) {
             $urls[] = [
-                'url' => "{$this->frontendUrl}/blogs/{$blog->slug}",
+                'url' => "{$this->frontendUrl}/{$blog->slug}",
                 'lastmod' => $blog->updated_at->toIso8601String(),
                 'changefreq' => 'daily',
                 'priority' => '0.9',
             ];
         }
 
-        // 3. Posts
-        $posts = $this->postRepository->getAllPublished();
-        foreach ($posts as $post) {
-            // Eager-load blog relation or fallback to generic path
-            $blogSlug = $post->blog ? $post->blog->slug : 'default';
-            $urls[] = [
-                'url' => "{$this->frontendUrl}/blogs/{$blogSlug}/{$post->slug}",
-                'lastmod' => $post->updated_at->toIso8601String(),
-                'changefreq' => 'weekly',
-                'priority' => '0.8',
-            ];
-        }
-
-        // 4. Authors
+        // 3. Authors
         $authors = $this->authorRepository->all();
         foreach ($authors as $author) {
             $urls[] = [
@@ -75,12 +60,12 @@ class SitemapService
             ];
         }
 
-        // 5. Categories
-        $categories = $this->categoryRepository->all();
-        foreach ($categories as $category) {
+        // 4. Tags
+        $tags = $this->tagRepository->all();
+        foreach ($tags as $tag) {
             $urls[] = [
-                'url' => "{$this->frontendUrl}/categories/{$category->slug}",
-                'lastmod' => $category->updated_at->toIso8601String(),
+                'url' => "{$this->frontendUrl}/tags/{$tag->slug}",
+                'lastmod' => ($tag->updated_at ?? now())->toIso8601String(),
                 'changefreq' => 'weekly',
                 'priority' => '0.7',
             ];

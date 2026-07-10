@@ -291,10 +291,9 @@ export default async function BlogDetailPage({ params }: PageProps) {
 
   // Dynamic Schema Generation
   const headersList = await headers();
-  const host = headersList.get("host") || "demo.webcreationcanada.com";
+  const host = headersList.get("host") || (process.env.NEXT_PUBLIC_APP_URL ? process.env.NEXT_PUBLIC_APP_URL.replace(/^https?:\/\//, "") : "localhost:3000");
   const protocol = host.includes("localhost") ? "http" : "https";
-  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "/blog";
-  const baseUrl = `${protocol}://${host}${basePath}`;
+  const baseUrl = `${protocol}://${host}`;
   const pageUrl = `${baseUrl}/${blog.slug}`;
   const logoUrl = settings?.logo_url || `${baseUrl}/logo.png`;
 

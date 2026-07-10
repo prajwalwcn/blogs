@@ -6,5 +6,5 @@ interface PageProps {
 
 export default async function BlogPostDetailPage({ params }: PageProps) {
   const resolvedParams = await params;
-  redirect(`/blogs/${resolvedParams.slug}`);
+  redirect(`/${resolvedParams.slug}`);
 }

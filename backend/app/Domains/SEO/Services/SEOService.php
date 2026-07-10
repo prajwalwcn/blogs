@@ -25,7 +25,7 @@ class SEOService
     public function getPostSEO(Post $post): array
     {
         $blogSlug = $post->blog ? $post->blog->slug : 'default';
-        $canonical = "{$this->frontendUrl}/blogs/{$blogSlug}/{$post->slug}";
+        $canonical = "{$this->frontendUrl}/{$blogSlug}/{$post->slug}";
 
         return [
             'meta' => [
@@ -54,7 +54,7 @@ class SEOService
                 'article' => $this->generateArticleSchema($post),
                 'breadcrumbs' => $this->generateBreadcrumbSchema([
                     ['name' => 'Home', 'url' => $this->frontendUrl],
-                    ['name' => $post->blog ? $post->blog->name : 'Blog', 'url' => "{$this->frontendUrl}/blogs/{$blogSlug}"],
+                    ['name' => $post->blog ? $post->blog->name : 'Blog', 'url' => "{$this->frontendUrl}/{$blogSlug}"],
                     ['name' => $post->title, 'url' => $canonical],
                 ]),
                 'faq' => $this->generateFaqSchema($post->faq),
@@ -70,7 +70,7 @@ class SEOService
      */
     public function getBlogSEO(\App\Domains\Blog\Models\Blog $blog): array
     {
-        $canonical = "{$this->frontendUrl}/blogs/{$blog->slug}";
+        $canonical = "{$this->frontendUrl}/{$blog->slug}";
 
         return [
             'meta' => [
